@@ -1,0 +1,15 @@
+{% if node.deprecated %}
+    {% for deprecation in node.deprecations %}
+        <div class="alert alert-warning d-flex align-items-start gap-3" role="alert">
+            <div class="fs-5 text-warning-emphasis">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="flex-grow-1">
+                <div class="fw-semibold mb-1">Deprecated</div>
+                <article class="mb-0">
+                    {{ deprecation.description|description|markdown }}
+                </article>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

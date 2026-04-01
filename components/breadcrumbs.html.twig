@@ -1,0 +1,20 @@
+{% set breadcrumbs = usesNamespaces ? breadcrumbs(node) : packages(node) %}
+
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+            <a href="{{ path('/') }}" class="text-decoration-none">
+                <i class="fas fa-home text-primary me-1"></i>
+                <span>Home</span>
+            </a>
+        </li>
+
+        {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item">
+                <a href="{{ link(breadcrumb) }}" class="text-decoration-none">
+                    {{ breadcrumb.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

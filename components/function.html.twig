@@ -1,0 +1,31 @@
+<article class="border rounded-4 p-4 bg-body shadow-sm">
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+        <div>
+            <h4 class="h5 mb-2" id="function_{{ function.name }}">
+                <span class="text-primary">{{ function.name }}()</span>
+                {{ include('components/headerlink.html.twig', {'on': function}, with_context = false) }}
+            </h4>
+
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge text-bg-light border text-dark">{{ function.visibility|title }}</span>
+
+                {% if function.deprecated %}
+                    <span class="badge text-bg-warning">Deprecated</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {{ include('components/element-found-in.html.twig', {'node': function}) }}
+    {{ include('components/summary.html.twig', {'node': function}) }}
+    {{ include('components/deprecation.html.twig', {'node': function}) }}
+
+    <div class="mt-4">
+        {{ include('components/method-signature.html.twig', {'node': function}) }}
+    </div>
+
+    {{ include('components/description.html.twig', {'node': function}) }}
+    {{ include('components/method-arguments.html.twig', {'node': function}) }}
+    {{ include('components/tags.html.twig', {'node': function}) }}
+    {{ include('components/method-response.html.twig', {'node': function}) }}
+</article>

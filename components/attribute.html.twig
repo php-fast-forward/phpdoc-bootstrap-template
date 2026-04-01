@@ -1,0 +1,21 @@
+<div class="d-grid gap-2">
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        <span class="badge text-bg-info">
+            #[{{ attribute.attribute | route('class:short') }}]
+        </span>
+    </div>
+
+    {% if attribute.arguments is not empty %}
+        <div class="d-flex flex-column gap-2 mt-1">
+            {% for argument in attribute.arguments %}
+                <div class="small">
+                    {% if argument.name %}
+                        <span class="fw-semibold text-body-secondary">${{ argument.name }}</span>
+                        <span class="text-body-secondary">:</span>
+                    {% endif %}
+                    <code>{{ argument.value }}</code>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

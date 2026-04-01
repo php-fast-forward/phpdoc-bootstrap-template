@@ -1,0 +1,91 @@
+<li class="nav-item">
+    {% set currentPath = destinationPath
+        |split('#')|first
+        |split('?')|first
+        |trim('/', 'left')
+    %}
+
+    {% set entryPath = entry.url
+        |split('#')|first
+        |split('?')|first
+        |trim('/', 'left')
+    %}
+
+    {% set normalizedCurrentPath = currentPath
+        |replace({'index.html': '', '.html': ''})
+        |trim('/', 'right')
+    %}
+
+    {% set normalizedEntryPath = entryPath
+        |replace({'index.html': '', '.html': ''})
+        |trim('/', 'right')
+    %}
+
+    {% set normalizedCurrentPath = normalizedCurrentPath ends with '/index'
+        ? normalizedCurrentPath|slice(0, normalizedCurrentPath|length - 6)
+        : normalizedCurrentPath
+    %}
+
+    {% set normalizedEntryPath = normalizedEntryPath ends with '/index'
+        ? normalizedEntryPath|slice(0, normalizedEntryPath|length - 6)
+        : normalizedEntryPath
+    %}
+
+    {% set hasChildren = entry.children.count > 0 %}
+    {% set isActive = normalizedCurrentPath == normalizedEntryPath %}
+    {% set isOpen = hasChildren and normalizedCurrentPath starts with normalizedEntryPath %}
+
+    {% set collapseId = 'sidebar-' ~ entryPath|replace({
+        '/': '-',
+        '\\': '-',
+        '.': '-',
+        '#': '-',
+        '?': '-',
+        '&': '-',
+        '=': '-',
+        ':': '-',
+        '%': '-',
+        ' ': '-'
+    })|trim('-') %}
+
+    {% set childrenMarkup %}
+        {% if hasChildren %}
+            {% for child in entry.children %}
+                {{ toc(child, 'components/menu.html.twig', maxDepth, depth + 1) }}
+            {% endfor %}
+        {% endif %}
+    {% endset %}
+
+    {% set hasActiveChild = ' active' in childrenMarkup %}
+    {% set isOpen = isOpen or hasActiveChild %}
+
+    <div class="d-flex align-items-center">
+        <a
+            href="{{ entryPath }}"
+            class="nav-link flex-grow-1 px-3 py-1 rounded-2{% if isActive %} active{% else %} link-body-emphasis{% endif %}{% if depth > 1 %} small{% endif %}"
+        >
+            {{ entry.title | shortFQSEN }}
+        </a>
+
+        {% if hasChildren %}
+            <button
+                class="btn btn-sm border-0 bg-transparent text-body-secondary px-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#{{ collapseId }}"
+                aria-expanded="{{ isOpen ? 'true' : 'false' }}"
+                aria-controls="{{ collapseId }}"
+            >
+                <i class="fas fa-chevron-down small"></i>
+            </button>
+        {% endif %}
+    </div>
+
+    {% if hasChildren %}
+        <div id="{{ collapseId }}" class="collapse{% if isOpen %} show{% endif %}">
+            <ul class="nav flex-column ms-3 ps-3 border-start gap-1">
+                {{ childrenMarkup }}
+            </ul>
+        </div>
+    {% endif %}
+</li>

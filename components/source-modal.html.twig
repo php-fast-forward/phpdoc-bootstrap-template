@@ -1,0 +1,104 @@
+{% block sourceview_modal %}
+<div class="modal fade" id="source-view" tabindex="-1" aria-labelledby="source-view-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="source-view-label">
+                    <i class="fas fa-code text-primary"></i>
+                    <span>Source View</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0">
+                <pre
+                    class="language-php line-numbers linkable-line-numbers mb-0 rounded-0"
+                    style="max-height: 70vh; overflow-y: auto;"
+                    data-src="{{ node.path ? (path('files/' ~ node.path ~ '.txt')|raw) }}"
+                ></pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals_script %}
+<script>
+    (function () {
+        function loadExternalCodeSnippet(el, url, line) {
+            const pre = el.querySelector('pre[data-src]');
+            if (!pre) return;
+
+            const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+            const language = 'php';
+
+            const code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+            if (line) {
+                pre.setAttribute('data-line', line);
+            } else {
+                pre.removeAttribute('data-line');
+            }
+
+            code.textContent = 'Loading…';
+            pre.appendChild(code);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', src, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState !== 4) return;
+
+                if (xhr.status < 400 && xhr.responseText) {
+                    code.textContent = xhr.responseText;
+                    Prism.highlightElement(code);
+
+                    if (line) {
+                        const lineElement = pre.querySelector('.line-numbers-rows > span:nth-child(' + line + ')');
+                        if (lineElement) {
+                            pre.scrollTop = lineElement.offsetTop - (pre.offsetHeight / 2);
+                        }
+                    }
+
+                    return;
+                }
+
+                if (xhr.status === 404) {
+                    code.textContent = '✖ Error: File could not be found';
+                    return;
+                }
+
+                if (xhr.status >= 400) {
+                    code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    return;
+                }
+
+                code.textContent = '✖ Error: An unknown error occurred';
+            };
+
+            xhr.send(null);
+        }
+
+        document.querySelectorAll('[data-modal]').forEach(function (trigger) {
+            trigger.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const modalId = this.dataset.modal;
+                const modalEl = document.getElementById(modalId);
+
+                if (!modalEl) return;
+
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+
+                loadExternalCodeSnippet(
+                    modalEl,
+                    this.dataset.src || null,
+                    this.dataset.line || null
+                );
+            });
+        });
+    })();
+</script>
+{% endblock %}

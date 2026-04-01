@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% include 'components/breadcrumbs.html.twig' %}
+
+    <article class="phpdocumentor-element">
+        <div class="mb-4">
+            {{ include('components/enum-title.html.twig') }}
+        </div>
+
+        <div class="d-grid gap-4">
+            <section class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    {{ include('components/element-found-in.html.twig') }}
+                    {{ include('components/summary.html.twig') }}
+                    {{ include('components/deprecation.html.twig') }}
+                    {{ include('components/description.html.twig') }}
+                    {{ include('components/tags.html.twig', {node: node}) }}
+                </div>
+            </section>
+
+            <section class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    {{ include('components/table-of-contents.html.twig') }}
+                </div>
+            </section>
+
+            {% set cases = cases(node) %}
+            {% set methods = methods(node) %}
+
+            {% if cases is not empty %}
+                <section class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-list text-success"></i>
+                        <span class="fw-semibold">Cases</span>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('components/enum-cases.html.twig') }}
+                    </div>
+                </section>
+            {% endif %}
+
+            {% if methods is not empty %}
+                <section class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-code text-primary"></i>
+                        <span class="fw-semibold">Methods</span>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('components/methods.html.twig') }}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+
+        {{ include('components/source-modal.html.twig') }}
+    </article>
+{% endblock %}
+
+{% block on_this_page %}
+    {% set cases = cases(node) %}
+    {% set methods = methods(node) %}
+
+    <section>
+        <div class="d-grid gap-4">
+            <div>
+                <div class="small text-uppercase fw-semibold text-body-secondary mb-2">Table of contents</div>
+                <div class="list-group list-group-flush">
+                    {% if cases is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-cases">
+                            Cases
+                        </a>
+                    {% endif %}
+                    {% if methods is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-methods">
+                            Methods
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if cases is not empty %}
+                <div>
+                    <div class="small text-uppercase fw-semibold text-body-secondary mb-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-list text-success"></i>
+                        <span>Cases</span>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        {% for case in cases %}
+                            <a
+                                class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent d-flex align-items-center justify-content-between gap-2{% if case.deprecated %} text-decoration-line-through text-body-secondary{% endif %}"
+                                href="{{ link(case) }}"
+                            >
+                                <span class="text-truncate">{{ case.name }}</span>
+                                {% if case.deprecated %}
+                                    <span class="badge text-bg-warning">Deprecated</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if methods is not empty %}
+                <div>
+                    <div class="small text-uppercase fw-semibold text-body-secondary mb-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-code text-primary"></i>
+                        <span>Methods</span>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        {% for method in methods|sortByVisibility %}
+                            <a
+                                class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent d-flex align-items-center justify-content-between gap-2{% if method.deprecated %} text-decoration-line-through text-body-secondary{% endif %}"
+                                href="{{ link(method) }}"
+                            >
+                                <span class="text-truncate">{{ method.name }}()</span>
+                                {% if method.deprecated %}
+                                    <span class="badge text-bg-warning">Deprecated</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

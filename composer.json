@@ -1,0 +1,36 @@
+{
+    "name": "fast-forward/phpdoc-bootstrap-template",
+    "description": "A clean and modern Bootstrap-based template for phpDocumentor, focused on improved readability, navigation, and developer experience.",
+    "type": "phpdocumentor-template",
+    "license": "MIT",
+    "keywords": [
+        "phpdocumentor",
+        "documentation",
+        "template",
+        "theme",
+        "bootstrap",
+        "bootstrap5",
+        "docs",
+        "api-docs",
+        "php",
+        "developer-tools",
+        "ui",
+        "frontend"
+    ],
+    "homepage": "https://github.com/php-fast-forward/phpdoc-bootstrap-template",
+    "authors": [
+        {
+            "name": "Felipe Sayão Lobato Abreu",
+            "email": "github@mentordosnerds.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/php-fast-forward/phpdoc-bootstrap-template/issues",
+        "source": "https://github.com/php-fast-forward/phpdoc-bootstrap-template"
+    },
+    "require": {
+        "php": "^8.3"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

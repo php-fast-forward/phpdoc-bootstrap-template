@@ -1,0 +1,30 @@
+<code class="d-inline-flex flex-wrap align-items-center gap-2 px-3 py-2 rounded-3 bg-body-tertiary border{% if node.deprecated %} text-body-secondary text-decoration-line-through{% endif %}">
+    {% if node.visibility.isAsymmetric %}
+        <span class="badge text-bg-light border text-dark">
+            {{ node.visibility.read }} {{ node.visibility.write }}(set)
+        </span>
+    {% else %}
+        <span class="badge text-bg-light border text-dark">
+            {{ node.visibility }}
+        </span>
+    {% endif %}
+
+    {% if node.static %}
+        <span class="badge text-bg-secondary">static</span>
+    {% endif %}
+
+    <span class="text-info-emphasis">
+        {{ not node.type ? 'mixed' : node.type|route('class:short')|join('|')|raw }}
+    </span>
+
+    <span class="text-primary fw-semibold">
+        ${{ node.name }}
+    </span>
+
+    {% if node.default is not null %}
+        <span class="text-body-secondary">=</span>
+        <span class="text-success-emphasis">
+            {{ node.default is not null ? node.default : '""' }}
+        </span>
+    {% endif %}
+</code>

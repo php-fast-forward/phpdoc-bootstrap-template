@@ -1,0 +1,26 @@
+<aside class="d-flex flex-wrap align-items-center gap-2 mb-4 text-body-secondary small">
+    <i class="fas fa-map-marker-alt text-danger"></i>
+
+    <span>Defined in</span>
+
+    <abbr title="{{ node.file.path }}" class="text-decoration-none mb-0">
+        {{ node.file|route('file:short') }}
+    </abbr>
+
+    <span class="text-body-tertiary">:</span>
+
+    <span class="badge text-bg-light border">{{ node.line }}</span>
+
+    {% if node.file.source %}
+        <a
+            href="{{ target_path }}#source-view.{{ node.line }}"
+            class="btn btn-sm btn-outline-primary ms-2"
+            data-line="{{ node.line }}"
+            data-modal="source-view"
+            data-src="{{ path('files/' ~ node.file.path ~ '.txt')|raw }}"
+        >
+            <i class="fas fa-code me-1"></i>
+            View source
+        </a>
+    {% endif %}
+</aside>

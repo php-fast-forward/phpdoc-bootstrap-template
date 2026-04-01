@@ -1,0 +1,213 @@
+{% set constants = constants(node) %}
+{% set properties = properties(node) %}
+{% set methods = methods(node) %}
+{% set cases = cases(node) %}
+{% set functions = node.functions|default([]) %}
+
+<section class="mt-5">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <i class="fas fa-list-ul text-primary"></i>
+        <h3 id="toc" class="h4 mb-0">
+            Table of Contents
+            {{ include('components/headerlink.html.twig', {'on': node, 'at': 'toc'}, with_context = false) }}
+        </h3>
+    </div>
+
+    <div class="d-grid gap-4">
+        {% if packages|default([]) is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-box-open text-warning"></i>
+                    <h4 id="packages" class="h6 mb-0 fw-semibold">Packages</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for package in packages %}
+                        <a href="{{ link(package) }}" class="list-group-item list-group-item-action">
+                            {{ package.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if namespaces|default([]) is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-sitemap text-info"></i>
+                    <h4 id="namespaces" class="h6 mb-0 fw-semibold">Namespaces</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for namespace in namespaces %}
+                        <a href="{{ link(namespace) }}" class="list-group-item list-group-item-action">
+                            {{ namespace.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if node.interfaces is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-plug text-primary"></i>
+                    <h4 id="toc-interfaces" class="h6 mb-0 fw-semibold">Interfaces</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for interface in node.interfaces %}
+                        <div class="list-group-item">
+                            <a href="{{ link(interface) }}" class="fw-semibold text-decoration-none">
+                                {{ interface|route('class:short') }}
+                            </a>
+                            {% if interface.summary %}
+                                <p class="text-body-secondary mb-0 mt-1">{{ interface.summary }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if node.classes is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-cube text-primary"></i>
+                    <h4 id="toc-classes" class="h6 mb-0 fw-semibold">Classes</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for class in node.classes %}
+                        <div class="list-group-item">
+                            <a href="{{ link(class) }}" class="fw-semibold text-decoration-none">
+                                {{ class|route('class:short') }}
+                            </a>
+                            {% if class.summary %}
+                                <p class="text-body-secondary mb-0 mt-1">{{ class.summary }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if node.traits is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-layer-group text-success"></i>
+                    <h4 id="toc-traits" class="h6 mb-0 fw-semibold">Traits</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for trait in node.traits %}
+                        <div class="list-group-item">
+                            <a href="{{ link(trait) }}" class="fw-semibold text-decoration-none">
+                                {{ trait|route('class:short') }}
+                            </a>
+                            {% if trait.summary %}
+                                <p class="text-body-secondary mb-0 mt-1">{{ trait.summary }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if node.enums is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-list text-success"></i>
+                    <h4 id="toc-enums" class="h6 mb-0 fw-semibold">Enums</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for enum in node.enums %}
+                        <div class="list-group-item">
+                            <a href="{{ link(enum) }}" class="fw-semibold text-decoration-none">
+                                {{ enum|route('class:short') }}
+                            </a>
+                            {% if enum.summary %}
+                                <p class="text-body-secondary mb-0 mt-1">{{ enum.summary }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if constants is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-thumbtack text-warning"></i>
+                    <h4 id="toc-constants" class="h6 mb-0 fw-semibold">Constants</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for constant in constants|sortByVisibility %}
+                        <div class="list-group-item">
+                            {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if cases is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-list text-success"></i>
+                    <h4 id="toc-cases" class="h6 mb-0 fw-semibold">Cases</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for case in cases|sortByVisibility %}
+                        <div class="list-group-item">
+                            {{ include('components/table-of-contents-entry.html.twig', {'type': 'case', 'node': case}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if properties is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-sliders-h text-info"></i>
+                    <h4 id="toc-properties" class="h6 mb-0 fw-semibold">Properties</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for property in properties|sortByVisibility %}
+                        <div class="list-group-item">
+                            {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if methods is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-code text-primary"></i>
+                    <h4 id="toc-methods" class="h6 mb-0 fw-semibold">Methods</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for method in methods|sortByVisibility %}
+                        <div class="list-group-item">
+                            {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if functions is not empty %}
+            <section class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-code text-primary"></i>
+                    <h4 id="toc-functions" class="h6 mb-0 fw-semibold">Functions</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for function in functions %}
+                        <div class="list-group-item">
+                            {{ include('components/table-of-contents-entry.html.twig', {'type': 'function', 'node': function}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+    </div>
+</section>

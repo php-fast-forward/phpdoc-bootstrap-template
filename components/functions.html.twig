@@ -1,0 +1,17 @@
+{% if node.functions is not empty %}
+    <section>
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="fas fa-code text-primary"></i>
+            <h3 class="h4 mb-0" id="functions">
+                Functions
+                {{ include('components/headerlink.html.twig', {'on': node, 'at': 'functions'}, with_context = false) }}
+            </h3>
+        </div>
+
+        <div class="d-grid gap-4">
+            {% for function in node.functions %}
+                {% include 'components/function.html.twig' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

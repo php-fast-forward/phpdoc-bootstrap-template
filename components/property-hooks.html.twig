@@ -1,0 +1,14 @@
+{% if property.hooks is not empty %}
+    <section class="mt-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fas fa-link text-info"></i>
+            <h5 class="h6 text-uppercase text-body-secondary fw-semibold mb-0">Hooks</h5>
+        </div>
+
+        <div class="d-grid gap-3">
+            {% for hook in property.hooks %}
+                {{ include('components/property-hook.html.twig', {'hook': hook, 'property': property}) }}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

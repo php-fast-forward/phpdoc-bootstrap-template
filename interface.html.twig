@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% include 'components/breadcrumbs.html.twig' %}
+
+    <article class="phpdocumentor-element">
+        <div class="mb-4">
+            {{ include('components/interface-title.html.twig') }}
+        </div>
+
+        <div class="mb-4">
+            {{ include('components/element-found-in.html.twig') }}
+        </div>
+
+        <div class="mb-4">
+            {{ include('components/element-header.html.twig') }}
+        </div>
+
+        {% set constants = constants(node) %}
+        {% set methods = methods(node) %}
+
+        <div class="d-grid gap-4">
+            {% if constants is not empty %}
+                <section class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-thumbtack text-warning"></i>
+                        <span class="fw-semibold">Constants</span>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('components/constants.html.twig') }}
+                    </div>
+                </section>
+            {% endif %}
+
+            {% if methods is not empty %}
+                <section class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-code text-primary"></i>
+                        <span class="fw-semibold">Methods</span>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('components/methods.html.twig') }}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+
+        {{ include('components/source-modal.html.twig') }}
+    </article>
+{% endblock %}
+
+{% block on_this_page %}
+    {% set constants = constants(node) %}
+    {% set methods = methods(node) %}
+
+    <section>
+        <div class="d-grid gap-4">
+            <div>
+                <div class="small text-uppercase fw-semibold text-body-secondary mb-2">Table of contents</div>
+                <div class="list-group list-group-flush">
+                    {% if constants is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-constants">
+                            Constants
+                        </a>
+                    {% endif %}
+                    {% if methods is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-methods">
+                            Methods
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if methods is not empty %}
+                <div>
+                    <div class="small text-uppercase fw-semibold text-body-secondary mb-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-code text-primary"></i>
+                        <span>Methods</span>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        {% for method in methods|sortByVisibility %}
+                            <a
+                                class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent d-flex align-items-center justify-content-between gap-2{% if method.deprecated %} text-decoration-line-through text-body-secondary{% endif %}"
+                                href="{{ link(method) }}"
+                            >
+                                <span class="text-truncate">{{ method.name }}()</span>
+                                {% if method.deprecated %}
+                                    <span class="badge text-bg-warning">Deprecated</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if constants is not empty %}
+                <div>
+                    <div class="small text-uppercase fw-semibold text-body-secondary mb-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-thumbtack text-warning"></i>
+                        <span>Constants</span>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        {% for constant in constants|sortByVisibility %}
+                            <a
+                                class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent d-flex align-items-center justify-content-between gap-2{% if constant.deprecated %} text-decoration-line-through text-body-secondary{% endif %}"
+                                href="{{ link(constant) }}"
+                            >
+                                <span class="text-truncate">{{ constant.name }}</span>
+                                {% if constant.deprecated %}
+                                    <span class="badge text-bg-warning">Deprecated</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

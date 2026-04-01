@@ -1,0 +1,11 @@
+{% set methods = methods(node)|sortByVisibility %}
+
+{% if methods is not empty %}
+    <section>
+        <div class="d-grid gap-4">
+            {% for method in methods %}
+                {% include 'components/method.html.twig' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

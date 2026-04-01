@@ -1,0 +1,78 @@
+# PHPDocumentor Bootstrap Template
+
+A clean and modern Bootstrap-based template for phpDocumentor, designed to improve readability, navigation, and overall developer experience.
+
+## Features
+
+- Modern UI built with Bootstrap 5
+- Improved navigation and layout
+- Clean typography and spacing
+- Enhanced "On this page" sidebar
+- Better search UI integration
+- Responsive and mobile-friendly
+- Styled code blocks and documentation elements
+- Improved tables of contents and element listings
+
+## Installation
+
+Install the template with Composer:
+
+```bash
+composer require --dev fast-forward/phpdoc-bootstrap-template
+```
+
+Usage
+
+Reference the template from vendor in your phpdoc.xml:
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+>
+    <paths>
+        <output>build/docs</output>
+    </paths>
+
+    <version number="1.0.0">
+        <api>
+            <source dsn=".">
+                <path>src</path>
+            </source>
+        </api>
+    </version>
+
+    <template name="vendor/fast-forward/phpdoc-bootstrap-template" />
+</phpdocumentor>
+
+You can also generate documentation directly from the command line:
+
+vendor/bin/phpdoc --template vendor/fast-forward/phpdoc-bootstrap-template
+
+Or with a config file:
+
+vendor/bin/phpdoc --config phpdoc.xml
+
+Requirements
+	•	PHP 8.3+
+	•	phpDocumentor 3+
+
+Customization
+
+You can customize the template by overriding Twig files in your own project or by forking this package.
+
+Typical customization points include:
+	•	layout structure
+	•	sidebar navigation
+	•	search UI
+	•	cards and content sections
+	•	Bootstrap styling
+
+Contributing
+
+Contributions are welcome. Please open an issue or submit a pull request.
+
+License
+
+MIT

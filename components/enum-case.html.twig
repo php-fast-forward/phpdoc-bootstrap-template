@@ -1,0 +1,26 @@
+<article class="border rounded-4 p-4 bg-body shadow-sm">
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+        <div>
+            <h4 class="h5 mb-2" id="enumcase_{{ case.name }}">
+                <span class="text-success">{{ case.name }}</span>
+                {{ include('components/headerlink.html.twig', {'on': case}, with_context = false) }}
+            </h4>
+
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge text-bg-success">Case</span>
+
+                {% if case.deprecated %}
+                    <span class="badge text-bg-warning">Deprecated</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {{ include('components/element-found-in.html.twig', {'node': case}) }}
+    {{ include('components/summary.html.twig', {'node': case}) }}
+    {{ include('components/deprecation.html.twig', {'node': case}) }}
+    {{ include('components/description.html.twig', {'node': case}) }}
+    {{ include('components/description.html.twig', {'node': case.var[0]}) }}
+    {{ include('components/tags.html.twig', {'node': case}) }}
+    {% include 'components/attributes.html.twig' with {'node': case} only %}
+</article>

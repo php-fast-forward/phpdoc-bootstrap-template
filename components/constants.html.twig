@@ -1,0 +1,19 @@
+{% set constants = constants(node)|sortByVisibility %}
+
+{% if constants is not empty %}
+    <section>
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="fas fa-thumbtack text-warning"></i>
+            <h3 class="h4 mb-0" id="constants">
+                Constants
+                {{ include('components/headerlink.html.twig', {'on': node, 'at': 'constants'}, with_context = false) }}
+            </h3>
+        </div>
+
+        <div class="d-grid gap-4">
+            {% for constant in constants %}
+                {% include 'components/constant.html.twig' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

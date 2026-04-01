@@ -1,0 +1,21 @@
+<header id="header" class="sticky-top">
+    <nav class="navbar bg-primary navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand text-bg-primary" href="{{ path('/') }}" title="{{ project.name }}">{{ project.name }}</a>
+
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#header-nav" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="header-nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    {% include 'components/topnav.html.twig' %}
+                </ul>
+
+                <div class="navbar-nav ms-lg-3">
+                    {% include 'components/search.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

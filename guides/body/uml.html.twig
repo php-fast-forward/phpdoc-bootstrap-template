@@ -1,0 +1,18 @@
+{% apply spaceless %}
+    <figure
+        class="card border-0 shadow-sm overflow-hidden{% if node.classesString %} {{ node.classesString }}{% endif %}"
+        {% if node.hasOption('width') %}style="width: {{ node.option('width') }}"{% endif %}
+    >
+        <div class="card-body p-4 bg-body-tertiary">
+            <div class="text-center">
+                {{ uml(node.value) }}
+            </div>
+        </div>
+
+        {% if node.caption %}
+            <figcaption class="card-footer bg-body text-body-secondary small text-center">
+                {{ node.caption }}
+            </figcaption>
+        {% endif %}
+    </figure>
+{% endapply %}

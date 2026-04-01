@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% set baseUrl = renderBaseUrlHeader() %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/panzoom@8.7.3/dist/panzoom.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="py-4">
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="fas fa-project-diagram text-primary"></i>
+            <h2 class="h3 mb-0">Class Diagram</h2>
+        </div>
+
+        <div class="card border-0 shadow-sm overflow-hidden">
+            <div class="card-header bg-body-tertiary border-0 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div class="small text-uppercase fw-semibold text-body-secondary">
+                    Interactive graph
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoom-in">
+                        <i class="fas fa-search-plus me-1"></i>Zoom in
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoom-out">
+                        <i class="fas fa-search-minus me-1"></i>Zoom out
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="reset-panzoom">
+                        <i class="fas fa-sync-alt me-1"></i>Reset
+                    </button>
+                </div>
+            </div>
+
+            <div
+                class="bg-body-tertiary border-top"
+                style="height: 75vh; overflow: hidden; cursor: grab;"
+                id="graph-container"
+            >
+                <img
+                    src="graphs/classes.svg"
+                    id="scene"
+                    alt="Class diagram"
+                    class="img-fluid d-block mx-auto"
+                    style="max-width: none; user-select: none;"
+                >
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            var element = document.getElementById('scene');
+            var container = document.getElementById('graph-container');
+
+            var instance = panzoom(element, {
+                smoothScroll: false,
+                maxZoom: 5,
+                minZoom: 0.2,
+                bounds: false
+            });
+
+            container.addEventListener('mousedown', function () {
+                container.style.cursor = 'grabbing';
+            });
+
+            container.addEventListener('mouseup', function () {
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mouseleave', function () {
+                container.style.cursor = 'grab';
+            });
+
+            document.getElementById('zoom-in').addEventListener('click', function () {
+                instance.smoothZoom(0, 0, 1.2);
+            });
+
+            document.getElementById('zoom-out').addEventListener('click', function () {
+                instance.smoothZoom(0, 0, 0.8);
+            });
+
+            document.getElementById('reset-panzoom').addEventListener('click', function () {
+                instance.moveTo(0, 0);
+                instance.zoomAbs(0, 0, 1);
+            });
+        })();
+    </script>
+{% endblock %}

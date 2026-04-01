@@ -1,0 +1,11 @@
+{% set properties = properties(node)|sortByVisibility %}
+
+{% if properties is not empty %}
+    <section>
+        <div class="d-grid gap-4">
+            {% for property in properties %}
+                {% include 'components/property.html.twig' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

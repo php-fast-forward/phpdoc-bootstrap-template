@@ -1,0 +1,24 @@
+<nav aria-label="Top navigation">
+    <ul class="navbar-nav flex-row flex-wrap align-items-center gap-2">
+        {% for key, menu in topMenu|default([]) %}
+            {% for menuitem in menu %}
+                <li class="nav-item">
+                    <a
+                        href="{{ menuitem.url }}"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded text-white"
+                    >
+                        {% if menuitem.icon %}
+                            <i class="fab fa-{{ menuitem.icon }}"></i>
+                        {% endif %}
+
+                        {% if menuitem.iconClass %}
+                            <i class="{{ menuitem.iconClass }}"></i>
+                        {% endif %}
+
+                        <span>{{ menuitem.name }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</nav>

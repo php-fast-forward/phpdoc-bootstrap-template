@@ -1,0 +1,57 @@
+<div class="mb-5">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <div class="bg-success-subtle text-success rounded-3 d-inline-flex align-items-center justify-content-center" style="width: 3rem; height: 3rem;">
+            <i class="fas fa-list"></i>
+        </div>
+        <div>
+            <h2 class="display-5 mb-1">{{ node.name }}</h2>
+            <div class="text-body-secondary">Enum</div>
+        </div>
+    </div>
+
+    {% if node.backedType %}
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span class="text-body-secondary">backed by</span>
+            <span class="badge rounded-pill text-bg-success">
+                {{ node.backedType }}
+            </span>
+        </div>
+    {% endif %}
+
+    {% if usesPackages %}
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item text-body-secondary">in package</li>
+                {% for breadcrumb in packages(node) %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ link(breadcrumb) }}" class="text-decoration-none">{{ breadcrumb.name }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </nav>
+    {% endif %}
+
+    <div class="d-grid gap-2">
+        {% if node.interfaces is not empty %}
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="text-body-secondary">implements</span>
+                {% for interface in node.interfaces %}
+                    <span class="badge rounded-pill text-bg-info">
+                        {{ interface|route('class:short') }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if node.usedTraits is not empty %}
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="text-body-secondary">uses</span>
+                {% for trait in node.usedTraits %}
+                    <span class="badge rounded-pill text-bg-light border text-dark">
+                        {{ trait|route('class:short') }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

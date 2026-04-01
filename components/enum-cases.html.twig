@@ -1,0 +1,19 @@
+{% set cases = node.cases %}
+
+{% if cases is not empty %}
+    <section>
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="fas fa-list text-success"></i>
+            <h3 class="h4 mb-0" id="cases">
+                Cases
+                {{ include('components/headerlink.html.twig', {'on': node, 'at': 'cases'}, with_context = false) }}
+            </h3>
+        </div>
+
+        <div class="d-grid gap-4">
+            {% for case in cases %}
+                {% include 'components/enum-case.html.twig' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

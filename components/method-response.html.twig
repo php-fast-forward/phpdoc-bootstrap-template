@@ -1,0 +1,26 @@
+{% if (node.response.type and node.response.type != 'void' and node.response.type != 'mixed') or not node.response.description.empty %}
+    <section class="mt-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fas fa-reply text-success"></i>
+            <h5 class="h6 text-uppercase text-body-secondary fw-semibold mb-0">Return values</h5>
+        </div>
+
+        <div class="card border-0 bg-body-tertiary shadow-sm">
+            <div class="card-body p-3">
+                {% if node.response.type and node.response.type != 'void' and node.response.type != 'mixed' %}
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                        <span class="badge text-bg-light border text-dark">
+                            {{ node.response.type|route('class:short')|join('|')|raw }}
+                        </span>
+                    </div>
+                {% endif %}
+
+                {% if not node.response.description.empty %}
+                    <div>
+                        {{ include('components/description.html.twig', {'node': node.response, 'useCard': false}) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% set filesWithErrors = project.files|filter(file => file.allErrors is not empty) %}
+
+{% block title %}
+    {{ project.name }} &raquo; Compilation errors
+{% endblock %}
+
+{% block content %}
+    <section>
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('/') }}">Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Errors</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="fas fa-bug text-danger"></i>
+            <h2 class="h3 mb-0">Errors</h2>
+        </div>
+
+        {% set errorCount = 0 %}
+
+        {% if filesWithErrors is not empty %}
+            <section class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-list-ul text-primary"></i>
+                    <span class="fw-semibold">Table of contents</span>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>File</th>
+                                    <th class="text-end">Errors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in project.files|filter(file => file.allErrors is not empty) %}
+                                    {% if file.allErrors.count > 0 %}
+                                        <tr>
+                                            <td>
+                                                <a href="{{ target_path }}#{{ file.path }}" class="text-decoration-none">
+                                                    {{ file.path }}
+                                                </a>
+                                            </td>
+                                            <td class="text-end">
+                                                <span class="badge text-bg-danger">{{ file.allErrors.count }}</span>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% set errorCount = errorCount + file.allErrors.count %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {% if errorCount <= 0 %}
+            <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
+                <i class="fas fa-check-circle"></i>
+                <div>No errors have been found in this project.</div>
+            </div>
+        {% endif %}
+
+        <div class="d-grid gap-4">
+            {% for file in filesWithErrors %}
+                <section id="{{ file.path }}" class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-file-code text-secondary"></i>
+                        <span class="fw-semibold">
+                            <abbr title="{{ file.path }}" class="text-decoration-none">{{ file.name }}</abbr>
+                        </span>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Line</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for error in file.allErrors %}
+                                        <tr>
+                                            <td>
+                                                <span class="badge text-bg-danger">{{ error.severity }}</span>
+                                            </td>
+                                            <td>{{ error.line }}</td>
+                                            <td>{{ error.code|trans(error.context) }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

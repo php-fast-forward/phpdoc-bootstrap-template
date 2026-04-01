@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% include('components/breadcrumbs.html.twig') %}
+
+    <article class="phpdocumentor-element">
+        <div class="mb-4">
+            {{ include('components/file-title.html.twig') }}
+        </div>
+
+        <div class="d-grid gap-4">
+            <section class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    {{ include('components/summary.html.twig') }}
+                    {{ include('components/deprecation.html.twig') }}
+                    {{ include('components/description.html.twig') }}
+                    {{ include('components/tags.html.twig', {node: node}) }}
+                </div>
+            </section>
+
+            <section class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    {{ include('components/table-of-contents.html.twig') }}
+                </div>
+            </section>
+
+            {% set constants = constants(node) %}
+            {% set functions = node.functions|default([]) %}
+
+            {% if constants is not empty %}
+                <section class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-thumbtack text-warning"></i>
+                        <span class="fw-semibold">Constants</span>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('components/constants.html.twig') }}
+                    </div>
+                </section>
+            {% endif %}
+
+            {% if functions is not empty %}
+                <section class="card border-0 shadow-sm">
+                    <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-code text-primary"></i>
+                        <span class="fw-semibold">Functions</span>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ include('components/functions.html.twig') }}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+
+        {{ include('components/source-modal.html.twig') }}
+    </article>
+{% endblock %}
+
+{% block on_this_page %}
+    {% set constants = constants(node) %}
+    {% set functions = node.functions|default([]) %}
+
+    <section>
+        <div class="d-grid gap-4">
+            <div>
+                <div class="small text-uppercase fw-semibold text-body-secondary mb-2">Table of contents</div>
+                <div class="list-group list-group-flush">
+                    {% if node.packages is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#packages">
+                            Packages
+                        </a>
+                    {% endif %}
+                    {% if node.namespaces is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#namespaces">
+                            Namespaces
+                        </a>
+                    {% endif %}
+                    {% if node.interfaces is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-interfaces">
+                            Interfaces
+                        </a>
+                    {% endif %}
+                    {% if node.classes is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-classes">
+                            Classes
+                        </a>
+                    {% endif %}
+                    {% if node.traits is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-traits">
+                            Traits
+                        </a>
+                    {% endif %}
+                    {% if node.enums is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-enums">
+                            Enums
+                        </a>
+                    {% endif %}
+                    {% if node.constants is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-constants">
+                            Constants
+                        </a>
+                    {% endif %}
+                    {% if node.functions is not empty %}
+                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent" href="{{ link(node) }}#toc-functions">
+                            Functions
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if constants is not empty %}
+                <div>
+                    <div class="small text-uppercase fw-semibold text-body-secondary mb-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-thumbtack text-warning"></i>
+                        <span>Constants</span>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        {% for constant in constants|sortByVisibility %}
+                            <a
+                                class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent d-flex align-items-center justify-content-between gap-2{% if constant.deprecated %} text-decoration-line-through text-body-secondary{% endif %}"
+                                href="{{ link(constant) }}"
+                            >
+                                <span class="text-truncate">{{ constant.name }}</span>
+                                {% if constant.deprecated %}
+                                    <span class="badge text-bg-warning">Deprecated</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if functions is not empty %}
+                <div>
+                    <div class="small text-uppercase fw-semibold text-body-secondary mb-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-code text-primary"></i>
+                        <span>Functions</span>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        {% for function in functions|sortByVisibility %}
+                            <a
+                                class="list-group-item list-group-item-action px-0 py-2 border-0 bg-transparent d-flex align-items-center justify-content-between gap-2{% if function.deprecated %} text-decoration-line-through text-body-secondary{% endif %}"
+                                href="{{ link(function) }}"
+                            >
+                                <span class="text-truncate">{{ function.name }}()</span>
+                                {% if function.deprecated %}
+                                    <span class="badge text-bg-warning">Deprecated</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

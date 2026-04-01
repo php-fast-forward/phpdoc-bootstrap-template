@@ -1,0 +1,29 @@
+{% set alertType = 'secondary' %}
+{% set icon = 'fa-info-circle' %}
+
+{% if name == 'important' %}
+    {% set alertType = 'primary' %}
+    {% set icon = 'fa-info-circle' %}
+{% elseif name == 'note' %}
+    {% set alertType = 'info' %}
+    {% set icon = 'fa-sticky-note' %}
+{% elseif name == 'warning' or name == 'caution' %}
+    {% set alertType = 'warning' %}
+    {% set icon = 'fa-exclamation-triangle' %}
+{% elseif name == 'tip' or name == 'hint' %}
+    {% set alertType = 'success' %}
+    {% set icon = 'fa-lightbulb' %}
+{% elseif name == 'seealso' %}
+    {% set alertType = 'secondary' %}
+    {% set icon = 'fa-external-link-alt' %}
+{% endif %}
+
+<div class="alert alert-{{ alertType }} d-flex align-items-start gap-3{{ class ? (' ' ~ class) }}{% if node.classes %} {{ node.classesString }}{% endif %}" role="alert">
+    <div class="fs-5">
+        <i class="fas {{ icon }}"></i>
+    </div>
+
+    <article class="mb-0 flex-grow-1">
+        {{ renderNode(node) }}
+    </article>
+</div>

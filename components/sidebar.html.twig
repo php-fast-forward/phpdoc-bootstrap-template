@@ -1,0 +1,72 @@
+<nav class="py-4">
+    <ul class="list-unstyled mb-0">
+        {% for version in project.versions %}
+            {% for toc in version.tableOfContents %}
+                <li class="mb-4">
+                    <div class="d-flex align-items-center gap-2 text-uppercase fw-semibold small text-body-secondary px-3 mb-2">
+                        <i class="fas fa-book text-primary"></i>
+                        <span>{{ toc.name|title }}</span>
+                    </div>
+
+                    <ul class="nav nav-pills flex-column">
+                        {% for root in toc.roots %}
+                            {{ toc(root, 'components/menu.html.twig', 1) }}
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        {% endfor %}
+
+        <li class="mb-4">
+            <div class="d-flex align-items-center gap-2 text-uppercase fw-semibold small text-body-secondary px-3 mb-2">
+                <i class="fas fa-chart-line text-success"></i>
+                <span>Reports</span>
+            </div>
+
+            <ul class="nav nav-pills flex-column">
+                {% if project.settings.custom['graphs.enabled'] %}
+                    <li class="nav-item">
+                        <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="graphs/classes.html">
+                            <i class="fas fa-project-diagram text-primary"></i>
+                            <span>Class Diagram</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="reports/deprecated.html">
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                        <span>Deprecated</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="reports/errors.html">
+                        <i class="fas fa-bug text-danger"></i>
+                        <span>Errors</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="reports/markers.html">
+                        <i class="fas fa-bookmark text-info"></i>
+                        <span>Markers</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="mb-4">
+            <div class="d-flex align-items-center gap-2 text-uppercase fw-semibold small text-body-secondary px-3 mb-2">
+                <i class="fas fa-folder-open text-warning"></i>
+                <span>Indices</span>
+            </div>
+
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="indices/files.html">
+                        <i class="fas fa-file-code text-secondary"></i>
+                        <span>Files</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
