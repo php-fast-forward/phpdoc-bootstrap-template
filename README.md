@@ -1,5 +1,9 @@
 # PHPDocumentor Bootstrap Template
 
+[![PHP Version](https://img.shields.io/badge/php-^8.3-777BB4?logo=php&logoColor=white)](https://www.php.net/releases/)
+[![License](https://img.shields.io/github/license/php-fast-forward/dev-tools?color=64748B)](LICENSE)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/php-fast-forward?logo=githubsponsors&logoColor=white&color=EC4899)](https://github.com/sponsors/php-fast-forward)
+
 A clean and modern Bootstrap-based template for phpDocumentor, designed to improve readability, navigation, and overall developer experience.
 
 ## Features
