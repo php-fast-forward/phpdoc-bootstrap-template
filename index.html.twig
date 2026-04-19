@@ -3,18 +3,22 @@
 {% set guideHome = null %}
 {% set guideFallback = null %}
 
-{% for version in project.versions if guideHome is null %}
-    {% for documentation in version.documentationSets if guideHome is null %}
-        {% for guide in documentation.documents|default([]) %}
-            {% if guideFallback is null %}
-                {% set guideFallback = link(guide) %}
-            {% endif %}
+{% for version in project.versions %}
+    {% if guideHome is null %}
+        {% for documentation in version.documentationSets %}
+            {% if guideHome is null %}
+                {% for guide in documentation.documents|default([]) %}
+                    {% if guideFallback is null %}
+                        {% set guideFallback = guide %}
+                    {% endif %}
 
-            {% if guideHome is null and (guide.file == 'index' or guide.file ends with '/index') %}
-                {% set guideHome = link(guide) %}
+                    {% if guideHome is null and (guide.file == 'index' or guide.file ends with '/index') %}
+                        {% set guideHome = guide %}
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         {% endfor %}
-    {% endfor %}
+    {% endif %}
 {% endfor %}
 
 {% if guideHome is null %}
@@ -23,24 +27,18 @@
 
 {% block head %}
     {% if guideHome %}
-        <meta http-equiv="refresh" content="0;url={{ guideHome }}">
-        <link rel="canonical" href="{{ guideHome }}">
+        {% for headerNode in guideHome.documentNode.headerNodes %}
+            {{ renderNode(headerNode) }}
+        {% endfor %}
     {% endif %}
     {{ parent() }}
 {% endblock %}
 
 {% block content %}
     {% if guideHome %}
-        <section class="jumbotron jumbotron-fluid bg-white p-0">
-            <div class="container">
-                <h1 class="display-3">Documentation</h1>
-                <p class="lead">Redirecting to the guide home for <strong>{{ project.name }}</strong>.</p>
-                <hr class="my-4">
-                <p class="mb-0">
-                    <a class="btn btn-primary" href="{{ guideHome }}">Open guide home</a>
-                </p>
-            </div>
-        </section>
+        {% for child in guideHome.documentNode.children %}
+            {{ renderNode(child) }}
+        {% endfor %}
     {% else %}
         <section class="jumbotron jumbotron-fluid bg-white p-0">
             <div class="container">
