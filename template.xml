@@ -5,7 +5,6 @@
   <email>github@mentordosnerds.com</email>
   <version>1.0.0</version>
   <transformations>
-    <transformation writer="twig" source="index.html.twig" artifact="index.html"/>
     <transformation writer="twig" query="files" source="file.html.twig" />
     <transformation writer="sourcecode" query="files" source="source/file.source.txt.twig" artifact="files/{{path}}.txt" />
     <transformation writer="twig" query="indexes.namespaces" source="namespace.html.twig" />

@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-{% set baseUrl = renderBaseUrlHeader() %}
 
 {% block stylesheets %}
 {% endblock %}
@@ -40,7 +39,7 @@
                 id="graph-container"
             >
                 <img
-                    src="graphs/classes.svg"
+                    src="{{ path('graphs/classes.svg') }}"
                     id="scene"
                     alt="Class diagram"
                     class="img-fluid d-block mx-auto"

@@ -26,26 +26,26 @@
             <ul class="nav nav-pills flex-column">
                 {% if project.settings.custom['graphs.enabled'] %}
                     <li class="nav-item">
-                        <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="graphs/classes.html">
+                        <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="{{ path('graphs/classes.html') }}">
                             <i class="fas fa-project-diagram text-primary"></i>
                             <span>Class Diagram</span>
                         </a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="reports/deprecated.html">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="{{ path('reports/deprecated.html') }}">
                         <i class="fas fa-exclamation-triangle text-warning"></i>
                         <span>Deprecated</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="reports/errors.html">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="{{ path('reports/errors.html') }}">
                         <i class="fas fa-bug text-danger"></i>
                         <span>Errors</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="reports/markers.html">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="{{ path('reports/markers.html') }}">
                         <i class="fas fa-bookmark text-info"></i>
                         <span>Markers</span>
                     </a>
@@ -61,7 +61,7 @@
 
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="indices/files.html">
+                    <a class="nav-link link-body-emphasis d-flex align-items-center gap-2" href="{{ path('indices/files.html') }}">
                         <i class="fas fa-file-code text-secondary"></i>
                         <span>Files</span>
                     </a>

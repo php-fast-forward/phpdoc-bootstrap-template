@@ -6,8 +6,31 @@
         <title>{% block title %}{{ project.name }}{% endblock %}</title>
     {% endblock %}
 
+    {% set currentDestination = destinationPath|default('') %}
+    {% if (currentDestination is empty) and env is not null %}
+        {% set currentDestination = env.currentFileDestination|default('') %}
+    {% endif %}
+
+    {% set normalizedDestination = currentDestination
+        |split('#')|first
+        |split('?')|first
+        |replace({'./': '', '.\\': ''})
+        |trim('/')
+    %}
+
+    {% set destinationDepth = normalizedDestination ? (normalizedDestination|split('/')|length - 1) : 0 %}
+    {% set baseHref = './' %}
+
+    {% if destinationDepth > 0 %}
+        {% set baseSegments = [] %}
+        {% for i in 1..destinationDepth %}
+            {% set baseSegments = baseSegments|merge(['../']) %}
+        {% endfor %}
+        {% set baseHref = baseSegments|join('') %}
+    {% endif %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{ renderBaseUrlHeader() }}
+    <base href="{{ baseHref }}">
 
     {% block stylesheets %}
         <!-- Bootstrap -->
@@ -20,7 +43,7 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 
-        <link rel="stylesheet" href="{{ template_path }}css/base.css">
+        <link rel="stylesheet" href="{{ path('css/base.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -84,9 +107,9 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-        <script src="js/template.js"></script>
-        <script src="js/search.js"></script>
-        <script defer src="js/searchIndex.js"></script>
+        <script src="{{ path('js/template.js') }}"></script>
+        <script src="{{ path('js/search.js') }}"></script>
+        <script defer src="{{ path('js/searchIndex.js') }}"></script>
     {% endblock %}
 </body>
 </html>
