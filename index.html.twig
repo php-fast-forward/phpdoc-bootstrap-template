@@ -1,28 +1,70 @@
 {% extends 'base.html.twig' %}
 
+{% set guideHome = null %}
+{% set guideFallback = null %}
+
+{% for version in project.versions if guideHome is null %}
+    {% for documentation in version.documentationSets if guideHome is null %}
+        {% for guide in documentation.documents|default([]) %}
+            {% if guideFallback is null %}
+                {% set guideFallback = link(guide) %}
+            {% endif %}
+
+            {% if guideHome is null and (guide.file == 'index' or guide.file ends with '/index') %}
+                {% set guideHome = link(guide) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+
+{% if guideHome is null %}
+    {% set guideHome = guideFallback %}
+{% endif %}
+
+{% block head %}
+    {% if guideHome %}
+        <meta http-equiv="refresh" content="0;url={{ guideHome }}">
+        <link rel="canonical" href="{{ guideHome }}">
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
-    <section class="jumbotron jumbotron-fluid bg-white p-0">
-        <div class="container">
-            <h1 class="display-3">Documentation</h1>
-            <p class="lead">Welcome to the <strong>{{ project.name }}</strong> API documentation.</p>
-            <hr class="my-4">
-        </div>
-    </section>
+    {% if guideHome %}
+        <section class="jumbotron jumbotron-fluid bg-white p-0">
+            <div class="container">
+                <h1 class="display-3">Documentation</h1>
+                <p class="lead">Redirecting to the guide home for <strong>{{ project.name }}</strong>.</p>
+                <hr class="my-4">
+                <p class="mb-0">
+                    <a class="btn btn-primary" href="{{ guideHome }}">Open guide home</a>
+                </p>
+            </div>
+        </section>
+    {% else %}
+        <section class="jumbotron jumbotron-fluid bg-white p-0">
+            <div class="container">
+                <h1 class="display-3">Documentation</h1>
+                <p class="lead">Welcome to the <strong>{{ project.name }}</strong> API documentation.</p>
+                <hr class="my-4">
+            </div>
+        </section>
 
-    <section>
-        {% set node = project.namespace %}
+        <section>
+            {% set node = project.namespace %}
 
-        {{
-        include(
-            'components/table-of-contents.html.twig',
-            {
-                'node': project.namespace,
-                'namespaces': usesNamespaces or not usesPackages ? node.children : [],
-                'packages': usesPackages ? project.package.children : []
-            }
-        )
-        }}
-        {{ include('components/constants.html.twig', {'node': project.namespace}) }}
-        {{ include('components/functions.html.twig', {'node': project.namespace}) }}
-    </section>
+            {{
+            include(
+                'components/table-of-contents.html.twig',
+                {
+                    'node': project.namespace,
+                    'namespaces': usesNamespaces or not usesPackages ? node.children : [],
+                    'packages': usesPackages ? project.package.children : []
+                }
+            )
+            }}
+            {{ include('components/constants.html.twig', {'node': project.namespace}) }}
+            {{ include('components/functions.html.twig', {'node': project.namespace}) }}
+        </section>
+    {% endif %}
 {% endblock %}

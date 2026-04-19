@@ -17,6 +17,7 @@ A clean and modern Bootstrap-based template for phpDocumentor, designed to impro
 - Responsive and mobile-friendly
 - Styled code blocks and documentation elements
 - Improved tables of contents and element listings
+- Automatic homepage redirect to the guides index when guides are available
 
 ## Installation
 
