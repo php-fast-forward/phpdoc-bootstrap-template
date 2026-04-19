@@ -17,7 +17,7 @@ A clean and modern Bootstrap-based template for phpDocumentor, designed to impro
 - Responsive and mobile-friendly
 - Styled code blocks and documentation elements
 - Improved tables of contents and element listings
-- Automatic homepage loading of the guides index content when guides are available
+- Designed for documentation sets that provide guides
 
 ## Installation
 
@@ -29,7 +29,7 @@ composer require --dev fast-forward/phpdoc-bootstrap-template
 
 ## Usage
 
-Reference the template from vendor in your phpdoc.xml:
+Reference the template from vendor in your phpdoc.xml. This template is designed for projects that ship guides, and the guide output should point to the documentation root (`.`) so the guide index becomes the homepage:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -48,6 +48,12 @@ Reference the template from vendor in your phpdoc.xml:
                 <path>src</path>
             </source>
         </api>
+        <guide format="rst">
+            <source dsn=".">
+                <path>docs</path>
+            </source>
+            <output>.</output>
+        </guide>
     </version>
 
     <template name="vendor/fast-forward/phpdoc-bootstrap-template" />
@@ -65,6 +71,8 @@ Or with a config file:
 ```bash
 vendor/bin/phpdoc --config phpdoc.xml
 ```
+
+With this setup, the guide `index` document is rendered as the root `index.html`.
 
 ## Requirements
 

@@ -1,122 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% set guideHomeUrl = null %}
-{% set guideFallbackUrl = null %}
-
-{% for version in project.versions %}
-    {% if guideHomeUrl is null %}
-        {% for documentation in version.documentationSets %}
-            {% if guideHomeUrl is null %}
-                {% for guide in documentation.documents|default([]) %}
-                    {% set guideUrl = guide.file ~ '.html' %}
-
-                    {% if documentation.outputLocation != '' and documentation.outputLocation != '.' %}
-                        {% set guideUrl = documentation.outputLocation ~ '/' ~ guideUrl %}
-                    {% endif %}
-
-                    {% if guideFallbackUrl is null and guideUrl %}
-                        {% set guideFallbackUrl = guideUrl %}
-                    {% endif %}
-
-                    {% if guideHomeUrl is null and guideUrl and (guide.file == 'index' or guide.file ends with '/index') %}
-                        {% set guideHomeUrl = guideUrl %}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endfor %}
-
-{% if guideHomeUrl is null %}
-    {% set guideHomeUrl = guideFallbackUrl %}
-{% endif %}
-
 {% block content %}
-    {% if guideHomeUrl %}
-        <div
-            data-guide-home
-            data-guide-url="{{ guideHomeUrl }}"
-            aria-live="polite"
-        >
-            <section class="jumbotron jumbotron-fluid bg-white p-0">
-                <div class="container">
-                    <h1 class="display-3">Documentation</h1>
-                    <p class="lead">Loading the guide home for <strong>{{ project.name }}</strong>.</p>
-                    <hr class="my-4">
-                </div>
-            </section>
+    <section class="jumbotron jumbotron-fluid bg-white p-0">
+        <div class="container">
+            <h1 class="display-3">Documentation</h1>
+            <p class="lead">Welcome to the <strong>{{ project.name }}</strong> API documentation.</p>
+            <hr class="my-4">
         </div>
+    </section>
 
-        <noscript>
-            <meta http-equiv="refresh" content="0;url={{ guideHomeUrl }}">
-        </noscript>
+    <section>
+        {% set node = project.namespace %}
 
-        <script>
-            (function () {
-                const container = document.querySelector('[data-guide-home]');
-
-                if (!container) {
-                    return;
-                }
-
-                const guideUrl = container.getAttribute('data-guide-url');
-
-                if (!guideUrl) {
-                    return;
-                }
-
-                fetch(guideUrl)
-                    .then(function (response) {
-                        if (!response.ok) {
-                            throw new Error('Failed to load guide home');
-                        }
-
-                        return response.text();
-                    })
-                    .then(function (html) {
-                        const parser = new DOMParser();
-                        const documentHtml = parser.parseFromString(html, 'text/html');
-                        const guideContent = documentHtml.querySelector('#content .bg-body.rounded-4');
-
-                        if (!guideContent) {
-                            throw new Error('Guide content container not found');
-                        }
-
-                        container.innerHTML = guideContent.innerHTML;
-
-                        if (documentHtml.title) {
-                            document.title = documentHtml.title;
-                        }
-                    })
-                    .catch(function () {
-                        // Keep the fallback CTA visible when inline loading fails.
-                    });
-            }());
-        </script>
-    {% else %}
-        <section class="jumbotron jumbotron-fluid bg-white p-0">
-            <div class="container">
-                <h1 class="display-3">Documentation</h1>
-                <p class="lead">Welcome to the <strong>{{ project.name }}</strong> API documentation.</p>
-                <hr class="my-4">
-            </div>
-        </section>
-
-        <section>
-            {% set node = project.namespace %}
-
-            {{
-            include(
-                'components/table-of-contents.html.twig',
-                {
-                    'node': project.namespace,
-                    'namespaces': usesNamespaces or not usesPackages ? node.children : [],
-                    'packages': usesPackages ? project.package.children : []
-                }
-            )
-            }}
-            {{ include('components/constants.html.twig', {'node': project.namespace}) }}
-            {{ include('components/functions.html.twig', {'node': project.namespace}) }}
-        </section>
-    {% endif %}
+        {{
+        include(
+            'components/table-of-contents.html.twig',
+            {
+                'node': project.namespace,
+                'namespaces': usesNamespaces or not usesPackages ? node.children : [],
+                'packages': usesPackages ? project.package.children : []
+            }
+        )
+        }}
+        {{ include('components/constants.html.twig', {'node': project.namespace}) }}
+        {{ include('components/functions.html.twig', {'node': project.namespace}) }}
+    </section>
 {% endblock %}

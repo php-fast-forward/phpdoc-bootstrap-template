@@ -20,7 +20,7 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 
-        <link rel="stylesheet" href="{{ template_path }}css/base.css">
+        <link rel="stylesheet" href="{{ path('css/base.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -84,9 +84,9 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-        <script src="js/template.js"></script>
-        <script src="js/search.js"></script>
-        <script defer src="js/searchIndex.js"></script>
+        <script src="{{ path('js/template.js') }}"></script>
+        <script src="{{ path('js/search.js') }}"></script>
+        <script defer src="{{ path('js/searchIndex.js') }}"></script>
     {% endblock %}
 </body>
 </html>
