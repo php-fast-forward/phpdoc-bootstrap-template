@@ -8,7 +8,11 @@
         {% for documentation in version.documentationSets %}
             {% if guideHomeUrl is null %}
                 {% for guide in documentation.documents|default([]) %}
-                    {% set guideUrl = link(guide) %}
+                    {% set guideUrl = guide.file ~ '.html' %}
+
+                    {% if documentation.outputLocation != '' and documentation.outputLocation != '.' %}
+                        {% set guideUrl = documentation.outputLocation ~ '/' ~ guideUrl %}
+                    {% endif %}
 
                     {% if guideFallbackUrl is null and guideUrl %}
                         {% set guideFallbackUrl = guideUrl %}
@@ -39,12 +43,13 @@
                     <h1 class="display-3">Documentation</h1>
                     <p class="lead">Loading the guide home for <strong>{{ project.name }}</strong>.</p>
                     <hr class="my-4">
-                    <p class="mb-0">
-                        <a class="btn btn-primary" href="{{ guideHomeUrl }}">Open guide home</a>
-                    </p>
                 </div>
             </section>
         </div>
+
+        <noscript>
+            <meta http-equiv="refresh" content="0;url={{ guideHomeUrl }}">
+        </noscript>
 
         <script>
             (function () {
