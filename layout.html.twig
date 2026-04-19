@@ -6,7 +6,31 @@
         <title>{% block title %}{{ project.name }}{% endblock %}</title>
     {% endblock %}
 
+    {% set currentDestination = destinationPath|default('') %}
+    {% if (currentDestination is empty) and env is not null %}
+        {% set currentDestination = env.currentFileDestination|default('') %}
+    {% endif %}
+
+    {% set normalizedDestination = currentDestination
+        |split('#')|first
+        |split('?')|first
+        |replace({'./': '', '.\\': ''})
+        |trim('/')
+    %}
+
+    {% set destinationDepth = normalizedDestination ? (normalizedDestination|split('/')|length - 1) : 0 %}
+    {% set baseHref = './' %}
+
+    {% if destinationDepth > 0 %}
+        {% set baseSegments = [] %}
+        {% for i in 1..destinationDepth %}
+            {% set baseSegments = baseSegments|merge(['../']) %}
+        {% endfor %}
+        {% set baseHref = baseSegments|join('') %}
+    {% endif %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="{{ baseHref }}">
 
     {% block stylesheets %}
         <!-- Bootstrap -->
