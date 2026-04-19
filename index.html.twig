@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% set guideHome = null %}
-{% set guideFallback = null %}
+{% set guideHomeUrl = null %}
+{% set guideFallbackUrl = null %}
 
 {% for version in project.versions %}
-    {% if guideHome is null %}
+    {% if guideHomeUrl is null %}
         {% for documentation in version.documentationSets %}
-            {% if guideHome is null %}
+            {% if guideHomeUrl is null %}
                 {% for guide in documentation.documents|default([]) %}
-                    {% if guideFallback is null %}
-                        {% set guideFallback = guide %}
+                    {% set guideUrl = link(guide) %}
+
+                    {% if guideFallbackUrl is null and guideUrl %}
+                        {% set guideFallbackUrl = guideUrl %}
                     {% endif %}
 
-                    {% if guideHome is null and (guide.file == 'index' or guide.file ends with '/index') %}
-                        {% set guideHome = guide %}
+                    {% if guideHomeUrl is null and guideUrl and (guide.file == 'index' or guide.file ends with '/index') %}
+                        {% set guideHomeUrl = guideUrl %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
@@ -21,24 +23,71 @@
     {% endif %}
 {% endfor %}
 
-{% if guideHome is null %}
-    {% set guideHome = guideFallback %}
+{% if guideHomeUrl is null %}
+    {% set guideHomeUrl = guideFallbackUrl %}
 {% endif %}
 
-{% block head %}
-    {% if guideHome %}
-        {% for headerNode in guideHome.documentNode.headerNodes %}
-            {{ renderNode(headerNode) }}
-        {% endfor %}
-    {% endif %}
-    {{ parent() }}
-{% endblock %}
-
 {% block content %}
-    {% if guideHome %}
-        {% for child in guideHome.documentNode.children %}
-            {{ renderNode(child) }}
-        {% endfor %}
+    {% if guideHomeUrl %}
+        <div
+            data-guide-home
+            data-guide-url="{{ guideHomeUrl }}"
+            aria-live="polite"
+        >
+            <section class="jumbotron jumbotron-fluid bg-white p-0">
+                <div class="container">
+                    <h1 class="display-3">Documentation</h1>
+                    <p class="lead">Loading the guide home for <strong>{{ project.name }}</strong>.</p>
+                    <hr class="my-4">
+                    <p class="mb-0">
+                        <a class="btn btn-primary" href="{{ guideHomeUrl }}">Open guide home</a>
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <script>
+            (function () {
+                const container = document.querySelector('[data-guide-home]');
+
+                if (!container) {
+                    return;
+                }
+
+                const guideUrl = container.getAttribute('data-guide-url');
+
+                if (!guideUrl) {
+                    return;
+                }
+
+                fetch(guideUrl)
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Failed to load guide home');
+                        }
+
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        const parser = new DOMParser();
+                        const documentHtml = parser.parseFromString(html, 'text/html');
+                        const guideContent = documentHtml.querySelector('#content .bg-body.rounded-4');
+
+                        if (!guideContent) {
+                            throw new Error('Guide content container not found');
+                        }
+
+                        container.innerHTML = guideContent.innerHTML;
+
+                        if (documentHtml.title) {
+                            document.title = documentHtml.title;
+                        }
+                    })
+                    .catch(function () {
+                        // Keep the fallback CTA visible when inline loading fails.
+                    });
+            }());
+        </script>
     {% else %}
         <section class="jumbotron jumbotron-fluid bg-white p-0">
             <div class="container">
