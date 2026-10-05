@@ -1,7 +1,85 @@
 {% include 'components/uml.js.twig' %}
 
-$(document).ready(function() {
-    hljs.highlightAll();
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.hljs) window.hljs.highlightAll();
+    document.querySelectorAll('table').forEach(function (table) {
+        table.classList.add('table', 'table-striped-columns');
+    });
 
-    $('table').addClass('table table-striped-columns');
+    var root = document.documentElement;
+    var header = document.querySelector('#header');
+    function measureHeader() {
+        if (header) root.style.setProperty('--ff-header-height', header.getBoundingClientRect().height + 'px');
+    }
+    measureHeader();
+    if (window.ResizeObserver && header) new ResizeObserver(measureHeader).observe(header);
+
+    var outline = document.querySelector('[data-guide-outline]');
+    if (outline) {
+        document.querySelectorAll('.ff-docs-article h2, .ff-docs-article h3').forEach(function (heading) {
+            var section = heading.closest('section[id]');
+            var id = heading.id || (section && section.id);
+            if (!id) return;
+            var link = document.createElement('a');
+            var destination = new URL(window.location.href);
+            destination.hash = id;
+            link.href = destination.href;
+            link.textContent = heading.textContent;
+            outline.appendChild(link);
+        });
+    }
+    var toggle = document.querySelector('[data-reading-theme-toggle]');
+    var key = 'fast-forward-documentation-theme';
+    function applyTheme(theme) {
+        root.setAttribute('data-bs-theme', theme);
+        if (toggle) {
+            toggle.setAttribute('aria-pressed', String(theme === 'dark'));
+            toggle.textContent = theme === 'dark' ? 'Light reading surface' : 'Navy reading surface';
+        }
+    }
+    var stored = null;
+    try { stored = window.localStorage.getItem(key); } catch (error) { /* Storage is optional. */ }
+    applyTheme(stored === 'dark' ? 'dark' : 'light');
+    if (toggle) {
+        toggle.hidden = false;
+        toggle.addEventListener('click', function () {
+            var theme = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(theme);
+            try { window.localStorage.setItem(key, theme); } catch (error) { /* Reading still works. */ }
+        });
+    }
+
+    var navigation = document.querySelector('.ff-docs-navigation');
+    var mobile = window.matchMedia('(max-width: 991.98px)');
+    function adjustNavigation() { if (navigation) navigation.open = !mobile.matches; }
+    adjustNavigation();
+    if (mobile.addEventListener) mobile.addEventListener('change', adjustNavigation);
+
+    if (!window.isSecureContext || !navigator.clipboard || !navigator.clipboard.writeText) return;
+    document.querySelectorAll('pre').forEach(function (pre) {
+        var code = pre.querySelector('code');
+        if (!code) return;
+        var toolbar = document.createElement('div');
+        toolbar.className = 'ff-code-toolbar';
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'ff-copy-button';
+        button.textContent = 'Copy';
+        button.setAttribute('aria-label', 'Copy code example');
+        var status = document.createElement('span');
+        status.className = 'ff-copy-status';
+        status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
+        button.addEventListener('click', async function () {
+            try {
+                await navigator.clipboard.writeText(code.textContent);
+                status.textContent = 'Copied.';
+            } catch (error) {
+                status.textContent = 'Copy unavailable. Select the code to copy it.';
+            }
+        });
+        toolbar.appendChild(button);
+        pre.insertBefore(toolbar, pre.firstChild);
+        pre.appendChild(status);
+    });
 });
