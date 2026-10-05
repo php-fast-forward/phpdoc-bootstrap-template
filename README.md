@@ -1,7 +1,7 @@
 # PHPDocumentor Bootstrap Template
 
 <p align="center">
-  <img src="docs/_static/mascot-banner.png" alt="Dash designing responsive documentation with navigation and code examples" width="840">
+  <img src="https://raw.githubusercontent.com/php-fast-forward/phpdoc-bootstrap-template/d8fd98e27b4317104e6a9e0611cdb445a99f961e/docs/_static/mascot-banner.png" alt="Dash designing responsive documentation with navigation and code examples" width="840">
 </p>
 
 A clean and modern Bootstrap-based template for phpDocumentor, designed to improve readability, navigation, and overall developer experience.
