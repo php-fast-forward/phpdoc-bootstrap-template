@@ -1,6 +1,6 @@
 # Fast Forward documentation design
 
-This template implements the approved documentation pattern from the [Fast Forward brand kit](https://github.com/php-fast-forward/.github/tree/654e4a463533f1d8b8223369b3b0bbc1a4a0badf). Twig and Bootstrap 5 remain the runtime foundation.
+This template implements the approved documentation pattern from the [Fast Forward brand kit](https://github.com/php-fast-forward/.github). Twig and Bootstrap 5 remain the runtime foundation.
 
 ## Token mapping
 
@@ -26,7 +26,7 @@ Existing phpDocumentor destination-depth handling, Bootstrap collapse menus, Fus
 
 - `docs/_static/fast-forward-logo-dark.svg` copies the approved native outlined fox signature from `assets/brand/fast-forward-logo-dark.svg`.
 - `docs/_static/dash-reading.png` copies the primary developer collection reading pose from `assets/mascot/dash-developer-reading.png`, SHA-256 `bb87dc5d6a8bbcde4510ca5f99e19a6a216a577b9c83aac2c5947454e2b1e982`.
-- Source kit commit: `654e4a463533f1d8b8223369b3b0bbc1a4a0badf`.
+- Source repository: [php-fast-forward/.github](https://github.com/php-fast-forward/.github).
 - The maintainer requested this public template adaptation on 2026-10-05. This authorizes these assets for the template and its generated documentation. Historical reference-art rights remain unrecorded; no new independent artwork reuse license is asserted by the package's software license.
 
 ## Validation
