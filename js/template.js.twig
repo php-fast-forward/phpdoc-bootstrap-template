@@ -57,31 +57,89 @@ document.addEventListener('DOMContentLoaded', function () {
     adjustNavigation();
     if (mobile.addEventListener) mobile.addEventListener('change', adjustNavigation);
 
-    if (!window.isSecureContext || !navigator.clipboard || !navigator.clipboard.writeText) return;
+    function codeIcon(paths) {
+        var namespace = 'http://www.w3.org/2000/svg';
+        var icon = document.createElementNS(namespace, 'svg');
+        icon.setAttribute('viewBox', '0 0 20 20');
+        icon.setAttribute('width', '18');
+        icon.setAttribute('height', '18');
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
+        icon.setAttribute('stroke-width', '1.6');
+        icon.setAttribute('stroke-linecap', 'round');
+        icon.setAttribute('stroke-linejoin', 'round');
+        icon.setAttribute('aria-hidden', 'true');
+        icon.setAttribute('focusable', 'false');
+        paths.forEach(function (value) {
+            var path = document.createElementNS(namespace, 'path');
+            path.setAttribute('d', value);
+            icon.appendChild(path);
+        });
+        return icon;
+    }
+    var canCopy = window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText;
     document.querySelectorAll('pre').forEach(function (pre) {
         var code = pre.querySelector('code');
         if (!code) return;
+        var languageClass = Array.from(code.classList).find(function (name) { return /^(language|lang)-/.test(name); });
+        var language = code.getAttribute('data-language') || pre.getAttribute('data-language') || (languageClass ? languageClass.replace(/^(language|lang)-/, '') : '');
+        var languages = { bash: 'Bash', sh: 'Shell', shell: 'Shell', php: 'PHP', javascript: 'JavaScript', js: 'JavaScript', json: 'JSON', html: 'HTML', xml: 'XML', css: 'CSS', yaml: 'YAML', yml: 'YAML', sql: 'SQL', plaintext: 'Code', text: 'Code' };
+        var title = code.getAttribute('data-title') || pre.getAttribute('data-title') || languages[language] || language || 'Code';
+        var frame = document.createElement('div');
+        frame.className = 'ff-code-window';
         var toolbar = document.createElement('div');
         toolbar.className = 'ff-code-toolbar';
+        var dots = document.createElement('span');
+        dots.className = 'ff-code-dots';
+        dots.setAttribute('aria-hidden', 'true');
+        for (var index = 0; index < 3; index++) dots.appendChild(document.createElement('span'));
+        var heading = document.createElement('span');
+        heading.className = 'ff-code-title';
+        heading.appendChild(codeIcon(['m7 5-5 5 5 5', 'm13 5 5 5-5 5', 'm11 3-2 14']));
+        var label = document.createElement('span');
+        label.textContent = title;
+        heading.appendChild(label);
+        var actions = document.createElement('span');
+        actions.className = 'ff-code-actions';
+        toolbar.appendChild(dots);
+        toolbar.appendChild(heading);
+        toolbar.appendChild(actions);
+        pre.parentNode.insertBefore(frame, pre);
+        frame.appendChild(toolbar);
+        frame.appendChild(pre);
+        if (!canCopy) return;
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'ff-copy-button';
-        button.textContent = 'Copy';
         button.setAttribute('aria-label', 'Copy code example');
+        button.setAttribute('title', 'Copy code');
+        button.appendChild(codeIcon(['M7 7h10v11H7z', 'M4 13H2V2h10v2']));
         var status = document.createElement('span');
         status.className = 'ff-copy-status';
         status.setAttribute('role', 'status');
         status.setAttribute('aria-live', 'polite');
+        status.setAttribute('aria-atomic', 'true');
+        var statusTimer = null;
         button.addEventListener('click', async function () {
+            window.clearTimeout(statusTimer);
+            status.textContent = '';
+            button.removeAttribute('data-copied');
             try {
                 await navigator.clipboard.writeText(code.textContent);
-                status.textContent = 'Copied.';
+                status.textContent = 'Copied!';
+                button.setAttribute('title', 'Copied!');
+                button.setAttribute('data-copied', 'true');
+                statusTimer = window.setTimeout(function () {
+                    status.textContent = '';
+                    button.setAttribute('title', 'Copy code');
+                    button.removeAttribute('data-copied');
+                }, 2500);
             } catch (error) {
                 status.textContent = 'Copy unavailable. Select the code to copy it.';
+                button.setAttribute('title', 'Copy unavailable');
             }
         });
-        toolbar.appendChild(button);
-        pre.insertBefore(toolbar, pre.firstChild);
-        pre.appendChild(status);
+        actions.appendChild(button);
+        actions.appendChild(status);
     });
 });

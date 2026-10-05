@@ -63,6 +63,7 @@ function verify(string $output): void
     }
     sort($pages);
     requireValid($pages !== [], 'No generated HTML');
+    $codeSamples = [];
 
     foreach ($pages as $source) {
         $document = new DOMDocument();
@@ -74,6 +75,10 @@ function verify(string $output): void
             libxml_use_internal_errors($previous);
         }
         $xpath = new DOMXPath($document);
+        $codeSamples[$source] = [];
+        foreach ($xpath->query('//pre/code') as $code) {
+            $codeSamples[$source][] = trim($code->textContent);
+        }
         $ids = [];
         foreach ($xpath->query('//*[@id]') as $element) {
             $ids[$element->getAttribute('id')] = true;
@@ -115,7 +120,7 @@ function verify(string $output): void
 
     $template = dirname(__DIR__);
     foreach (['fast-forward-logo-dark.svg', 'dash-reading.png'] as $name) {
-        $original = $template . '/docs/_static/' . $name;
+        $original = $template . '/data/' . $name;
         $generated = $output . '/images/' . $name;
         requireValid(is_file($original) && is_file($generated), "Identity asset missing: {$name}");
         requireValid(hash_file('sha256', $original) === hash_file('sha256', $generated), "Identity asset differs: {$name}");
@@ -123,7 +128,13 @@ function verify(string $output): void
     requireValid(is_file($output . '/index.html'), 'Root guide not generated');
     requireValid(is_file($output . '/guides/installation.html'), 'Nested guide not generated');
     requireValid(is_file($output . '/classes/FastForward-Documentation-Example.html'), 'API not generated');
-    printf("PASS: %d generated pages, nested reading anchors, theme icons and byte-identical assets\n", count($pages));
+    $guide = $codeSamples[$output . '/guides/installation.html'];
+    requireValid(in_array('composer require fast-forward/clock', $guide, true), 'Guide shell example changed');
+    $php = "<?php\n\nuse FastForward\\Documentation\\Example;\n\n\$example = new Example();\necho \$example->greet('Dash');";
+    requireValid(in_array($php, $guide, true), 'Guide PHP example changed');
+    $api = $codeSamples[$output . '/classes/FastForward-Documentation-Example.html'];
+    requireValid(in_array("\$example = new Example();\necho \$example->greet('Dash');", $api, true), 'API PHP example changed');
+    printf("PASS: %d generated pages, nested reading anchors, theme icons, unchanged code examples and byte-identical assets\n", count($pages));
 }
 
 try {

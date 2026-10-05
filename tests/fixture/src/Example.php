@@ -12,6 +12,11 @@ final class Example
     /**
      * Return a greeting for the documentation reader.
      *
+     * ```php
+     * $example = new Example();
+     * echo $example->greet('Dash');
+     * ```
+     *
      * @param string $name Reader name.
      * @return string A personalized greeting.
      */

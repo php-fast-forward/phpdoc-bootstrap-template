@@ -18,15 +18,17 @@ Body and heading fonts use the system stack; code uses the system monospace stac
 
 ## Behavior
 
-Light is the default reading surface. The navy navigation rail stays consistent in both themes. A compact sun/moon toolbar button progressively enables theme switching, labels the next action for assistive technology and stores the preference when local storage is available. Denied storage never blocks reading. Navigation uses native details on mobile, and the code Copy button appears only with a secure Clipboard API. Clipboard failures produce a visible status. Skip navigation, focus outlines, search labels, active-page semantics and reduced-motion/print styles are included.
+Light is the default reading surface. The navy navigation rail stays consistent in both themes. A compact sun/moon toolbar button progressively enables theme switching, labels the next action for assistive technology and stores the preference when local storage is available. Denied storage never blocks reading. Navigation uses native details on mobile. Code blocks progressively gain a window header with three decorative dots and a centered language label; an icon Copy control appears only with a secure Clipboard API. Copied feedback uses a tooltip and live region. Clipboard failures leave a visible instruction to select the code. The header stays separate from horizontally scrolling code, and copying preserves the exact example text. Skip navigation, focus outlines, search labels, active-page semantics and reduced-motion/print styles are included.
 
 Existing phpDocumentor destination-depth handling, Bootstrap collapse menus, Fuse search hooks and UML hooks remain intact. Required images are copied by FileIo transformations; consumers do not need to host the central kit.
 
 ## Assets
 
-- `docs/_static/fast-forward-logo-dark.svg` copies the approved native outlined fox signature from `assets/brand/fast-forward-logo-dark.svg`.
-- `docs/_static/dash-reading.png` copies the developer reading pose from `assets/mascot/dash-developer-reading.png`.
+- `data/fast-forward-logo-dark.svg` copies the approved native outlined fox signature from `assets/brand/fast-forward-logo-dark.svg`.
+- `data/dash-reading.png` copies the developer reading pose from `assets/mascot/dash-developer-reading.png`.
 - Source repository: [php-fast-forward/.github](https://github.com/php-fast-forward/.github).
+
+Runtime images live in `data/` so excluding consumer documentation from a Composer archive still preserves the generated site's identity assets.
 
 ## Validation
 
@@ -38,7 +40,7 @@ phpdoc --config phpdoc.xml
 
 The fixture includes root and nested guides, a PHP API class, admonitions, source examples and cross-document links. Generated HTML, CSS, JavaScript and copied images can then be inspected together.
 
-Run `php tests/verify-output.php /path/to/ff-template-preview` from the template checkout. It uses PHP's DOM extension to check shared local assets, same-page reading anchors and the accessible icon theme control across every generated HTML page, including nested guides and API pages. It also checks that copied identity images match the template files byte for byte. Optional graph rendering belongs to the consumer's phpDocumentor configuration.
+Run `php tests/verify-output.php /path/to/ff-template-preview` from the template checkout. It uses PHP's DOM extension to check shared local assets, same-page reading anchors and the accessible icon theme control across every generated HTML page, including nested guides and API pages. It also checks unchanged guide/API code examples and that copied identity images match the template files byte for byte. Optional graph rendering belongs to the consumer's phpDocumentor configuration.
 
 The implementation was generated with phpDocumentor 3.9.1 and visually compared with the kit's `profile/assets/docs-installation.png`: navy rail and purple active navigation, three-column desktop reading, system heading hierarchy, important callouts, and navy code panels with cyan Copy controls. Browser validation covered light/navy switching and persistence, guide outline anchors, code copy status, API search results, a 1440px desktop viewport and a 390px mobile viewport with no horizontal page overflow.
 
