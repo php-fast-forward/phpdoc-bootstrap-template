@@ -1,7 +1,7 @@
 # PHPDocumentor Bootstrap Template
 
 <p align="center">
-  <img src="assets/brand/dash.png" alt="Dash, the PHP Fast Forward fox, wearing a purple hoodie" width="320">
+  <img src="docs/_static/mascot-banner.png" alt="Dash designing responsive documentation with navigation and code examples" width="840">
 </p>
 
 A clean and modern Bootstrap-based template for phpDocumentor, designed to improve readability, navigation, and overall developer experience.
