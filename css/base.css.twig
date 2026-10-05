@@ -54,8 +54,12 @@
 .ff-docs-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; max-width: 240px; margin: 0; white-space: normal; }
 .ff-docs-brand img { display: block; width: 200px; max-width: 100%; height: auto; }
 .ff-docs-project { color: var(--ff-border); font-size: .75rem; font-weight: 600; }
-.ff-docs-theme { min-height: 44px; padding: 8px 12px; border: 1px solid var(--ff-cyan); border-radius: 6px; background: transparent; color: #fff; font-size: .875rem; }
+.ff-docs-theme { width: 44px; height: 44px; padding: 10px; border: 1px solid var(--ff-cyan); border-radius: 6px; background: transparent; color: #fff; flex-shrink: 0; }
+.ff-docs-theme:not([hidden]) { display: inline-flex; align-items: center; justify-content: center; }
 .ff-docs-theme:hover { background: var(--ff-primary-hover); }
+.ff-docs-theme .ff-theme-sun { display: none; }
+html[data-bs-theme="dark"] .ff-docs-theme .ff-theme-moon { display: none; }
+html[data-bs-theme="dark"] .ff-docs-theme .ff-theme-sun { display: block; }
 .ff-docs-rail { background: var(--ff-navy); color: #fff; }
 .ff-docs-navigation > summary { padding: 16px 24px; color: var(--ff-border); cursor: pointer; font-size: .875rem; font-weight: 600; border-bottom: 1px solid var(--ff-muted); }
 .ff-docs-rail .navigation { padding: 0 12px; }

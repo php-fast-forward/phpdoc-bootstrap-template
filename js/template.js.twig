@@ -34,7 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
         root.setAttribute('data-bs-theme', theme);
         if (toggle) {
             toggle.setAttribute('aria-pressed', String(theme === 'dark'));
-            toggle.textContent = theme === 'dark' ? 'Light reading surface' : 'Navy reading surface';
+            var label = theme === 'dark' ? 'Switch to light theme' : 'Switch to navy theme';
+            toggle.setAttribute('aria-label', label);
+            toggle.setAttribute('title', label);
         }
     }
     var stored = null;
