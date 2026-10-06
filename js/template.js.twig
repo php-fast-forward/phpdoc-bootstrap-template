@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function applyTheme(theme) {
         root.setAttribute('data-bs-theme', theme);
         if (toggle) {
-            toggle.setAttribute('aria-pressed', String(theme === 'dark'));
             var label = theme === 'dark' ? 'Switch to light theme' : 'Switch to navy theme';
             toggle.setAttribute('aria-label', label);
             toggle.setAttribute('title', label);

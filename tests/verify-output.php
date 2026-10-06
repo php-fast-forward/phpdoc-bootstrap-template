@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/** Check template-owned links in a real phpDocumentor build. */
+/** Stop fixture verification with the failing contract in the diagnostic. */
 function requireValid(bool $condition, string $message): void
 {
     if (!$condition) {
@@ -10,6 +10,7 @@ function requireValid(bool $condition, string $message): void
     }
 }
 
+/** Collapse URL dot segments before checking paths, including targets that do not exist. */
 function normalizePath(string $path): string
 {
     $segments = [];
@@ -29,7 +30,11 @@ function normalizePath(string $path): string
     return str_ends_with($path, '/') && $normalized !== '/' ? $normalized . '/' : $normalized;
 }
 
-/** @return array{path: string, fragment: string}|null */
+/**
+ * Resolve local references against the page's effective base; exclude network resources.
+ *
+ * @return array{path: string, fragment: string}|null
+ */
 function localTarget(string $base, string $reference): ?array
 {
     $parts = parse_url($reference);
@@ -52,6 +57,7 @@ function localTarget(string $base, string $reference): ?array
     ];
 }
 
+/** Verify shared assets, reading controls and original examples in every generated fixture page. */
 function verify(string $output): void
 {
     $pages = [];
@@ -91,12 +97,12 @@ function verify(string $output): void
         requireValid($base !== null, "External base URL: {$source}");
         foreach ($xpath->query('//img[@src] | //script[@src] | //link[@href]') as $element) {
             $href = $element->getAttribute($element->tagName === 'link' ? 'href' : 'src');
+            $target = localTarget($base['path'], $href);
             // Optional graph writers own their artifacts; this checks shared template assets.
-            if (!preg_match('~^(css|js|images)/~', $href)) {
+            if ($target === null || !preg_match('~^' . preg_quote($output, '~') . '/(?:css|js|images)/~', $target['path'])) {
                 continue;
             }
-            $target = localTarget($base['path'], $href);
-            requireValid($target !== null && is_file($target['path']), "Missing asset: {$href} in {$source}");
+            requireValid(is_file($target['path']), "Missing asset: {$href} in {$source}");
         }
 
         $anchors = $xpath->query('//a[contains(concat(" ", normalize-space(@class), " "), " ff-skip-link ") or @id="back-to-top"]');
@@ -113,7 +119,7 @@ function verify(string $output): void
         $toggle = $toggles->item(0);
         requireValid($toggle->getAttribute('type') === 'button' && $toggle->hasAttribute('hidden'), "Theme toggle must progressively enable: {$source}");
         requireValid($toggle->getAttribute('aria-label') === 'Switch to navy theme' && $toggle->getAttribute('title') === 'Switch to navy theme', "Theme action label missing: {$source}");
-        requireValid($toggle->getAttribute('aria-pressed') === 'false', "Initial theme state is incorrect: {$source}");
+        requireValid(!$toggle->hasAttribute('aria-pressed'), "Theme action must not expose a toggle state: {$source}");
         requireValid(trim($toggle->textContent) === '', "Theme toggle must be icon-only: {$source}");
         requireValid($xpath->query('.//*[local-name()="svg" and @aria-hidden="true"]', $toggle)->length === 2, "Theme icons missing: {$source}");
     }
