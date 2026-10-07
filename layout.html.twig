@@ -2,6 +2,15 @@
 <html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
+    <script>
+        (function () {
+            var theme = 'light';
+            try {
+                if (window.localStorage.getItem('fast-forward-documentation-theme') === 'dark') theme = 'dark';
+            } catch (error) { /* Storage is optional. */ }
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
     {% block head %}
         <title>{% block title %}{{ project.name }}{% endblock %}</title>
     {% endblock %}

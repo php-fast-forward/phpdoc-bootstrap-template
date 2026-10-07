@@ -38,9 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toggle.setAttribute('title', label);
         }
     }
-    var stored = null;
-    try { stored = window.localStorage.getItem(key); } catch (error) { /* Storage is optional. */ }
-    applyTheme(stored === 'dark' ? 'dark' : 'light');
+    applyTheme(root.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light');
     if (toggle) {
         toggle.hidden = false;
         toggle.addEventListener('click', function () {
@@ -77,9 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return icon;
     }
     var canCopy = window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText;
-    document.querySelectorAll('pre').forEach(function (pre) {
+    /** Add one code window per block, including asynchronously loaded source listings. */
+    function enhanceCodeWindow(pre) {
         var code = pre.querySelector('code');
-        if (!code) return;
+        if (!code || pre.parentElement.classList.contains('ff-code-window')) return;
         var languageClass = Array.from(code.classList).find(function (name) { return /^(language|lang)-/.test(name); });
         var language = code.getAttribute('data-language') || pre.getAttribute('data-language') || (languageClass ? languageClass.replace(/^(language|lang)-/, '') : '');
         var languages = { bash: 'Bash', sh: 'Shell', shell: 'Shell', php: 'PHP', javascript: 'JavaScript', js: 'JavaScript', json: 'JSON', html: 'HTML', xml: 'XML', css: 'CSS', yaml: 'YAML', yml: 'YAML', sql: 'SQL', plaintext: 'Code', text: 'Code' };
@@ -124,7 +123,9 @@ document.addEventListener('DOMContentLoaded', function () {
             status.textContent = '';
             button.removeAttribute('data-copied');
             try {
-                await navigator.clipboard.writeText(code.textContent);
+                var currentCode = pre.querySelector('code');
+                if (!currentCode) throw new Error('Code is unavailable');
+                await navigator.clipboard.writeText(currentCode.textContent);
                 status.textContent = 'Copied!';
                 button.setAttribute('title', 'Copied!');
                 button.setAttribute('data-copied', 'true');
@@ -140,5 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         actions.appendChild(button);
         actions.appendChild(status);
+    }
+    document.querySelectorAll('pre').forEach(enhanceCodeWindow);
+    document.addEventListener('ff-code-ready', function (event) {
+        if (event.target.matches('pre')) enhanceCodeWindow(event.target);
     });
 });

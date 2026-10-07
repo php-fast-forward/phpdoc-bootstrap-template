@@ -52,7 +52,8 @@
 
                 if (xhr.status < 400 && xhr.responseText) {
                     code.textContent = xhr.responseText;
-                    Prism.highlightElement(code);
+                    if (window.hljs) window.hljs.highlightElement(code);
+                    pre.dispatchEvent(new Event('ff-code-ready', { bubbles: true }));
 
                     if (line) {
                         const lineElement = pre.querySelector('.line-numbers-rows > span:nth-child(' + line + ')');

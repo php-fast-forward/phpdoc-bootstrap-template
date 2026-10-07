@@ -81,6 +81,9 @@ function verify(string $output): void
             libxml_use_internal_errors($previous);
         }
         $xpath = new DOMXPath($document);
+        $themeBoot = $xpath->query('//head/script[not(@src)]')->item(0);
+        requireValid($themeBoot !== null && str_contains($themeBoot->textContent, 'fast-forward-documentation-theme') && str_contains($themeBoot->textContent, 'data-bs-theme'), "Theme must initialize before rendering: {$source}");
+        requireValid($xpath->query('//head/script[not(@src)][1]/preceding-sibling::link[@rel="stylesheet"]')->length === 0, "Theme initialization follows stylesheets: {$source}");
         $codeSamples[$source] = [];
         foreach ($xpath->query('//pre/code') as $code) {
             $codeSamples[$source][] = trim($code->textContent);
@@ -134,6 +137,9 @@ function verify(string $output): void
     requireValid(is_file($output . '/index.html'), 'Root guide not generated');
     requireValid(is_file($output . '/guides/installation.html'), 'Nested guide not generated');
     requireValid(is_file($output . '/classes/FastForward-Documentation-Example.html'), 'API not generated');
+    $source = $output . '/files/src/Example.php.txt';
+    requireValid(is_file($source), 'Source View fixture not generated');
+    requireValid(hash_file('sha256', $source) === hash_file('sha256', $template . '/tests/fixture/src/Example.php'), 'Source View bytes changed');
     $guide = $codeSamples[$output . '/guides/installation.html'];
     requireValid(in_array('composer require fast-forward/clock', $guide, true), 'Guide shell example changed');
     $php = "<?php\n\nuse FastForward\\Documentation\\Example;\n\n\$example = new Example();\necho \$example->greet('Dash');";
