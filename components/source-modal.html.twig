@@ -34,6 +34,17 @@
 
             const code = document.createElement('code');
             code.className = 'language-' + language;
+            let loaded = false;
+
+            function scrollToSourceLine() {
+                const requestedLine = Number(line);
+                if (!loaded || !code.isConnected || !pre.clientHeight || !Number.isInteger(requestedLine) || requestedLine < 1) return;
+                const style = window.getComputedStyle(code);
+                const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.6;
+                const paddingTop = parseFloat(style.paddingTop) || 0;
+                pre.scrollTop = Math.max(0, (requestedLine - 1) * lineHeight + paddingTop - pre.clientHeight / 2);
+            }
+            el.addEventListener('shown.bs.modal', scrollToSourceLine, { once: true });
 
             pre.textContent = '';
             if (line) {
@@ -55,12 +66,8 @@
                     if (window.hljs) window.hljs.highlightElement(code);
                     pre.dispatchEvent(new Event('ff-code-ready', { bubbles: true }));
 
-                    if (line) {
-                        const lineElement = pre.querySelector('.line-numbers-rows > span:nth-child(' + line + ')');
-                        if (lineElement) {
-                            pre.scrollTop = lineElement.offsetTop - (pre.offsetHeight / 2);
-                        }
-                    }
+                    loaded = true;
+                    scrollToSourceLine();
 
                     return;
                 }
