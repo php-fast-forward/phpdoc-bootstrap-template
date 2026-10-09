@@ -1,7 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
+    <script>
+        (function () {
+            var theme = 'light';
+            try {
+                if (window.localStorage.getItem('fast-forward-documentation-theme') === 'dark') theme = 'dark';
+            } catch (error) { /* Storage is optional. */ }
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
     {% block head %}
         <title>{% block title %}{{ project.name }}{% endblock %}</title>
     {% endblock %}
@@ -19,6 +28,7 @@
     %}
 
     {% set destinationDepth = normalizedDestination ? (normalizedDestination|split('/')|length - 1) : 0 %}
+    {% set currentDocumentHref = normalizedDestination ends with '.html' ? normalizedDestination : (normalizedDestination ? normalizedDestination ~ '.html' : 'index.html') %}
     {% set baseHref = './' %}
 
     {% if destinationDepth > 0 %}
@@ -38,48 +48,58 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
         
-        <!-- Google Fonts -->
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 
         <link rel="stylesheet" href="{{ path('css/base.css') }}">
     {% endblock %}
 </head>
-<body>
+<body class="ff-docs">
+    <a class="ff-skip-link" href="{{ currentDocumentHref }}#content">Skip to documentation</a>
     <div id="main-wrapper">
         {% include 'components/header.html.twig' %}
 
-        <div id="content" role="main" class="container-fluid">
+        <main id="content" tabindex="-1" class="container-fluid">
             <div class="row min-vh-100">
-                <aside class="col-12 col-lg-3 col-xl-2 px-0 position-sticky top-0 vh-100 overflow-auto">
+                <aside class="ff-docs-rail col-12 col-lg-3 col-xl-2 px-0" data-bs-theme="dark">
+                    <details class="ff-docs-navigation" open>
+                        <summary>Documentation navigation</summary>
                     <div class="navigation h-100">
                         {% include 'components/sidebar.html.twig' %}
                     </div>
+                    </details>
                 </aside>
 
                 <div class="col-12 col-lg-9 col-xl-10">
                     <div class="py-4 py-xl-5">
                         <div class="container-fluid">
-                            {% set hasOnThisPage = block('on_this_page') is defined %}
+                            {% set hasOnThisPage = block('on_this_page') is defined or node.headerNodes is defined %}
 
                             <div class="row g-4">
                                 <div class="{{ hasOnThisPage ? 'col-12 col-xl-9' : 'col-12' }}">
-                                    <div class="bg-body rounded-4 border p-4 p-xl-5 shadow-sm">
+                                    <div class="ff-docs-article bg-body p-4 p-xl-5">
                                         {% block content %}{% endblock %}
                                     </div>
                                 </div>
 
                                 {% if hasOnThisPage %}
                                     <aside class="col-12 col-xl-3 d-none d-xl-block">
-                                        <div class="position-sticky" style="top: 2rem;">
+                                        <div class="position-sticky ff-docs-outline">
                                             <div class="bg-body-tertiary border rounded-4 p-3 shadow-sm">
                                                 <div class="d-flex align-items-center gap-2 text-uppercase fw-semibold small text-body-secondary mb-3">
                                                     <i class="fas fa-list-ul text-primary"></i>
                                                     <span>On this page</span>
                                                 </div>
 
-                                                {{ block('on_this_page') }}
+                                                {% if block('on_this_page') is defined %}
+                                                    {{ block('on_this_page') }}
+                                                {% else %}
+                                                    <nav data-guide-outline aria-label="On this page"></nav>
+                                                {% endif %}
+                                                <figure class="ff-docs-companion">
+                                                    <img src="{{ path('images/dash-reading.png') }}" alt="Dash reading the documentation" width="188" height="282" loading="lazy">
+                                                    <figcaption>Build with clarity. Keep moving forward.</figcaption>
+                                                </figure>
                                             </div>
                                         </div>
                                     </aside>
@@ -89,12 +109,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
 
         {% include 'components/search-results.html.twig' %}
     </div>
 
-    <a id="back-to-top" data-toggle="tooltip" title="Back to Top" href="javascript:void(0)"><i class="fa fa-chevron-up"></i></a>
+    <a id="back-to-top" title="Back to Top" href="{{ currentDocumentHref }}#content" aria-label="Back to documentation"><i class="fa fa-chevron-up"></i></a>
 
     {% block javascripts %}
         <!-- jQuery -->
