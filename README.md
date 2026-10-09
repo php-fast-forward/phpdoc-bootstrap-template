@@ -25,7 +25,7 @@ A clean and modern Bootstrap-based template for phpDocumentor, designed to impro
 
 ## Fast Forward design system
 
-The template implements the [approved documentation pattern](https://php-fast-forward.github.io/.github/documentation.html): a navy navigation rail, neutral reading surface, purple active states, system typography, navy code blocks, the fox signature and Dash as a reading companion. Bootstrap 5 remains the layout and navigation foundation.
+The template implements the [approved documentation pattern](https://php-fast-forward.github.io/.github/docs/brand/documentation.html): a navy navigation rail, neutral reading surface, purple active states, system typography, navy code blocks, the fox signature and Dash as a reading companion. Bootstrap 5 remains the layout and navigation foundation.
 
 The toolbar offers light and navy reading surfaces through a compact sun/moon button. The preference is stored locally when storage is available; reading works without JavaScript. Code blocks gain a window header with a language label. An icon Copy control appears when the browser supports the Clipboard API. Mobile navigation can be collapsed without JavaScript.
 
