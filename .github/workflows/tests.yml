@@ -1,0 +1,54 @@
+name: Template validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Run Tests (${{ matrix.php-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: dom, mbstring, intl, xml, zip
+          coverage: none
+          tools: composer:v2
+      - run: composer validate --strict
+      - run: composer install --no-scripts --no-interaction --prefer-dist --no-progress
+      - name: Validate rendered checkout
+        run: php tests/generate-fixture.php
+      - name: Validate rendered release archive
+        run: |
+          mkdir -p "$RUNNER_TEMP/template-archive"
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/template-archive"
+          php tests/generate-fixture.php "$RUNNER_TEMP/template-archive"
+
+  actions:
+    name: Analyze (actions)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install verified actionlint
+        run: |
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/actionlint_checksums.txt" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_checksums.txt
+          cd "$RUNNER_TEMP"
+          mv actionlint.tar.gz actionlint_1.7.12_linux_amd64.tar.gz
+          grep ' actionlint_1.7.12_linux_amd64.tar.gz$' actionlint_checksums.txt | sha256sum --check --strict
+          tar -xzf actionlint_1.7.12_linux_amd64.tar.gz actionlint
+      - run: '"$RUNNER_TEMP/actionlint"'

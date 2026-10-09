@@ -32,5 +32,13 @@
         "php": "^8.3"
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "phpdocumentor/shim": true
+        }
+    },
+    "require-dev": {
+        "phpdocumentor/shim": "^3.9"
+    }
 }

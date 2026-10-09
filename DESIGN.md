@@ -32,6 +32,8 @@ Runtime images live in `data/` so excluding consumer documentation from a Compos
 
 ## Validation
 
+Install the development tool with `composer install --no-scripts`, then run `php tests/generate-fixture.php`. Composer allows only the official `phpdocumentor/shim` plugin, which installs the signed phpDocumentor PHAR; no runtime dependency is added to template consumers. The CI matrix renders the fixture with PHP 8.3, 8.4 and 8.5 from both the checkout and a Git archive, and actionlint validates the workflow. The PHAR's bundled dependencies are outside Composer's dependency-audit coverage; use this build tool only with trusted project sources.
+
 Generate the fixture from `tests/fixture` with phpDocumentor 3:
 
 ```sh
