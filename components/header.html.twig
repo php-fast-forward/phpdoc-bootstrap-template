@@ -1,20 +1,20 @@
-<header id="header" class="sticky-top">
-    <nav class="navbar bg-primary navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand text-bg-primary" href="{{ path('/') }}" title="{{ project.name }}">{{ project.name }}</a>
-
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#header-nav" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation">
+<header id="header" class="sticky-top" data-bs-theme="dark">
+    <nav class="navbar ff-docs-header navbar-expand-lg" aria-label="Documentation toolbar">
+        <div class="container-fluid gap-3">
+            <a class="navbar-brand ff-docs-brand" href="{{ path('/') }}" title="{{ project.name }}">
+                <img src="{{ path('images/fast-forward-logo-dark.svg') }}" alt="PHP Fast Forward" width="200" height="80">
+                <span class="ff-docs-project">{{ project.name }}</span>
+            </a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#header-nav" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle toolbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div id="header-nav" class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    {% include 'components/topnav.html.twig' %}
-                </ul>
-
-                <div class="navbar-nav ms-lg-3">
-                    {% include 'components/search.html.twig' %}
-                </div>
+            <div id="header-nav" class="collapse navbar-collapse gap-3">
+                <div class="me-auto">{% include 'components/topnav.html.twig' %}</div>
+                {% include 'components/search.html.twig' %}
+                <button class="ff-docs-theme" type="button" data-reading-theme-toggle aria-label="Switch to navy theme" title="Switch to navy theme" hidden>
+                    <svg class="ff-theme-moon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 0 1 11.21 3 9 9 0 1 0 21 12.79Z" /></svg>
+                    <svg class="ff-theme-sun" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></svg>
+                </button>
             </div>
         </div>
     </nav>

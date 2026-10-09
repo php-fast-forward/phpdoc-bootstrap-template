@@ -22,6 +22,8 @@
     <transformation writer="twig" source="reports/markers.html.twig" artifact="reports/markers.html" />
     <transformation writer="twig" source="indices/files.html.twig" artifact="indices/files.html" />
     <transformation writer="twig" source="css/base.css.twig" artifact="css/base.css" />
+    <transformation writer="FileIo" query="copy" source="data/fast-forward-logo-dark.svg" artifact="images/fast-forward-logo-dark.svg" />
+    <transformation writer="FileIo" query="copy" source="data/dash-reading.png" artifact="images/dash-reading.png" />
     <transformation writer="RenderGuide" />
     <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>
