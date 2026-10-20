@@ -4,8 +4,8 @@ Add one unique `.changelog/*.md` fragment for each observable change. With
 PHP 8.5+ and CPX, inspect `help add`, then create and validate the note:
 
 ```sh
-cpx --skip-local fast-forward/changelog:0.3.0 add "Describe the observable change." --category=fixed --no-interaction
-cpx --skip-local fast-forward/changelog:0.3.0 check --no-interaction
+cpx --skip-local fast-forward/changelog add "Describe the observable change." --category=fixed --no-interaction
+cpx --skip-local fast-forward/changelog check --no-interaction
 ```
 
 After committing, validate the contribution with `check --since=origin/main`.
