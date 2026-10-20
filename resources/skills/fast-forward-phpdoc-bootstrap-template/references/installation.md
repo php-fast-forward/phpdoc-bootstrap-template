@@ -125,3 +125,10 @@ npx --yes skills@1.7.2 remove fast-forward-phpdoc-bootstrap-template --agent cod
 A globally installed Composer plugin is not global host skill installation.
 After any route inspect files, refresh the agent session, confirm discovery and
 request a bounded documentation task. Copy success does not prove activation.
+
+The Skills CLI 1.7.2 removal report is not proof that the canonical project
+`.agents/skills` directory disappeared. A Codex project exercise reported one
+removal while that copied package remained. Inspect the actual target and CLI
+lockfiles afterwards. If an obsolete copy remains, verify that no other host
+uses it, then archive only that selected directory outside discovery using the
+manual recovery procedure above. Do not run a blanket clean to compensate.
