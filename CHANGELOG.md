@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-10-20
+
+### Changed
+
+- Adopt Fast Forward Changelog automation and its project skill for validated contribution notes and reviewed version pull requests. ([#6](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/6))
+- Restore the Changelog skill from its GitHub source during Composer installation instead of committing a generated copy and separate installation receipt. ([#6](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/6))
+
 ## [2.1.0] - 2026-10-09
 
 ### Added
@@ -41,6 +48,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.1.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v1.0.2...v2.0.0
 [1.0.2]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v1.0.1...v1.0.2
