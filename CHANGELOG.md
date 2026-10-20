@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 - 2026-10-09
+## [2.1.0] - 2026-10-09
 
 ### Added
 
@@ -13,3 +13,5 @@
 ### Changed
 
 - Apply the shared design system's typography, colors and reading surfaces while preserving Bootstrap and phpDocumentor integration.
+
+[2.1.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/releases/tag/v2.1.0
