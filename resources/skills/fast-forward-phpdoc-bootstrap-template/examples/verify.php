@@ -20,7 +20,8 @@ foreach ([
     'images/dash-reading.png' => "\x89PNG",
 ] as $path => $expected) {
     $file = $output . '/' . $path;
-    if (!is_file($file) || !str_contains(file_get_contents($file), $expected)) {
+    $contents = is_file($file) ? file_get_contents($file) : false;
+    if ($contents === false || !str_contains($contents, $expected)) {
         fwrite(STDERR, "Missing or invalid generated artifact: {$path}\n");
         exit(1);
     }
