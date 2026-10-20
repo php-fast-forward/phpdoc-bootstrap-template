@@ -31,6 +31,14 @@
     "require": {
         "php": "^8.3"
     },
+    "suggest": {
+        "llm/skills": "Optionally synchronize the bundled consumer skill in your project."
+    },
+    "extra": {
+        "skills": {
+            "source": "resources/skills"
+        }
+    },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {

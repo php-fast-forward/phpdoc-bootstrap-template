@@ -103,6 +103,18 @@ Typical customization points include:
 - cards and content sections
 - Bootstrap styling
 
+## Consumer agent skill
+
+The package bundles [fast-forward-phpdoc-bootstrap-template](resources/skills/fast-forward-phpdoc-bootstrap-template/SKILL.md)
+for agents configuring guide homepages, API generation and output checks. It
+supports template `^2.1.1`, PHP `^8.3` and phpDocumentor shim `^3.9`, and includes
+an [existing DevTools reports route](resources/skills/fast-forward-phpdoc-bootstrap-template/references/dev-tools.md).
+The template itself does not install phpDocumentor or activate an agent skill.
+
+See [skill installation and lifecycle](resources/skills/fast-forward-phpdoc-bootstrap-template/references/installation.md)
+for optional project synchronization with `llm/skills ^1.15`, guarded manual
+project/global copies and a pinned Skills CLI alternative.
+
 ## Contributing
 
 Contributions are welcome. Please open an issue or submit a pull request.
