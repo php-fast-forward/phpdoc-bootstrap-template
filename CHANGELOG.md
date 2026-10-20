@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-10-20
+
+### Added
+
+- Bundle a portable consumer skill with checked phpDocumentor examples, DevTools reports guidance and optional llm/skills discovery metadata. ([#8](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/8))
+
 ## [2.1.1] - 2026-10-20
 
 ### Changed
@@ -48,6 +54,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.2.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v1.0.2...v2.0.0
