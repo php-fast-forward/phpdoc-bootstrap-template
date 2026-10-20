@@ -35,10 +35,12 @@
     "prefer-stable": true,
     "config": {
         "allow-plugins": {
-            "phpdocumentor/shim": true
+            "phpdocumentor/shim": true,
+            "llm/skills": true
         }
     },
     "require-dev": {
-        "phpdocumentor/shim": "^3.9"
+        "phpdocumentor/shim": "^3.9",
+        "llm/skills": "^1.15"
     }
 }
