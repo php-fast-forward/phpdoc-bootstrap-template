@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpdocumentor configVersion="3">
+    <title>Example documentation</title>
+    <paths>
+        <output>build/docs</output>
+        <cache>build/phpdoc-cache</cache>
+    </paths>
+    <version number="latest">
+        <api>
+            <include-source>true</include-source>
+            <source dsn="."><path>src</path></source>
+        </api>
+        <guide format="rst">
+            <source dsn="."><path>docs</path></source>
+            <output>.</output>
+        </guide>
+    </version>
+    <template name="vendor/fast-forward/phpdoc-bootstrap-template" />
+</phpdocumentor>

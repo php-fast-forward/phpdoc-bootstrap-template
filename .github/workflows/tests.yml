@@ -30,11 +30,14 @@ jobs:
       - run: composer install --no-scripts --no-interaction --prefer-dist --no-progress
       - name: Validate rendered checkout
         run: php tests/generate-fixture.php
+      - name: Validate bundled consumer example
+        run: php tests/verify-consumer-skill.php
       - name: Validate rendered release archive
         run: |
           mkdir -p "$RUNNER_TEMP/template-archive"
           git archive HEAD | tar -x -C "$RUNNER_TEMP/template-archive"
           php tests/generate-fixture.php "$RUNNER_TEMP/template-archive"
+          php tests/verify-consumer-skill.php "$RUNNER_TEMP/template-archive"
 
   actions:
     name: Analyze (actions)
