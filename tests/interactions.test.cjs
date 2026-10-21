@@ -9,7 +9,8 @@ function element() {
 }
 const form = element(), field = element(), results = element(), entries = element(), close = element(), clear = element(), body = element();
 const nodes = {'[data-search-form]': form, '[data-search-form] input[type="search"]': field, '[data-search-results]': results, '[data-search-results] .phpdocumentor-search-results__entries': entries, '.phpdocumentor-search-results__close': close, '[data-search-clear]': clear};
-const context = {document: {querySelector: s => nodes[s], body, addEventListener() {}, createElement() {return {set textContent(v) {this.innerHTML = v;}};}}, window: {addEventListener() {}}, Fuse: function () {this.search = value => value === 'missing' ? [] : [{name: 'Example', url: 'classes/Example.html'}];}, setTimeout(f) {f(); return 1;}, clearTimeout() {}};
+const documentListeners = {}, windowListeners = {};
+const context = {document: {querySelector: s => nodes[s], body, addEventListener(name, callback) {documentListeners[name] = callback;}, createElement() {return {set textContent(v) {this.innerHTML = v;}};}}, window: {addEventListener(name, callback) {windowListeners[name] = callback;}}, Fuse: function () {this.search = value => value === 'missing' ? [] : [{name: 'Example', url: 'classes/Example.html'}];}, setTimeout(f) {f(); return 1;}, clearTimeout() {}};
 vm.createContext(context);
 vm.runInContext(fs.readFileSync(path.join(root, 'js/search.js.twig'), 'utf8'), context);
 context.Search.init();
@@ -19,13 +20,15 @@ for (const query of ['Example', 'missing']) {
     field.listeners.keyup(event);
     const original = entries.innerHTML;
     assert.ok(original);
-    close.listeners.click(event);
-    assert.equal(entries.innerHTML, '');
-    field.listeners.focus(event);
-    assert.equal(entries.innerHTML, original, 'Reopening must regenerate unchanged-query results');
-    assert.ok(body.classList.contains('phpdocumentor-search--active-body'));
-    assert.ok(form.classList.contains('phpdocumentor-search--has-results'));
-    assert.ok(results.classList.contains('show'));
+    for (const dismiss of [() => close.listeners.click(event), () => documentListeners.click(event), () => windowListeners.keyup({...event, key: 'Escape'})]) {
+        dismiss();
+        assert.equal(entries.innerHTML, '');
+        field.listeners.focus(event);
+        assert.equal(entries.innerHTML, original, 'Reopening must regenerate unchanged-query results');
+        assert.ok(body.classList.contains('phpdocumentor-search--active-body'));
+        assert.ok(form.classList.contains('phpdocumentor-search--has-results'));
+        assert.ok(results.classList.contains('show'));
+    }
 }
 clear.listeners.click(event);
 assert.equal(field.value, '');
@@ -40,9 +43,12 @@ assert.ok(scripts.indexOf('panzoom.min.js') < scripts.indexOf('var instance = pa
 assert.ok(scripts.includes('var instance = panzoom'), 'Graph initialization must live after its footer dependency');
 const graphNodes = {};
 const calls = [];
-vm.runInNewContext(scripts.match(/<script>([\s\S]*?)<\/script>/)[1], {document: {getElementById(id) {return graphNodes[id] ||= {...element(), style: {}};}}, panzoom() {return {smoothZoom(...args) {calls.push(args);}, moveTo(...args) {calls.push(args);}, zoomAbs(...args) {calls.push(args);}};}});
+let pendingZoom = null, scale = 1;
+vm.runInNewContext(scripts.match(/<script>([\s\S]*?)<\/script>/)[1], {document: {getElementById(id) {return graphNodes[id] ||= {...element(), style: {}};}}, panzoom() {return {smoothZoom(...args) {calls.push(args); pendingZoom = () => {scale = args[2];};}, zoomTo(...args) {calls.push(args); pendingZoom = null;}, moveTo(...args) {calls.push(args);}, zoomAbs(...args) {calls.push(args); scale = args[2];}};}});
 graphNodes['zoom-in'].listeners.click();
 graphNodes['zoom-out'].listeners.click();
 graphNodes['reset-panzoom'].listeners.click();
-assert.deepEqual(calls, [[0, 0, 1.2], [0, 0, 0.8], [0, 0], [0, 0, 1]]);
+if (pendingZoom) pendingZoom();
+assert.equal(scale, 1, 'Reset must cancel in-flight zoom animation');
+assert.deepEqual(calls, [[0, 0, 1.2], [0, 0, 0.8], [0, 0, 1], [0, 0], [0, 0, 1]]);
 console.log('PASS graph inherited assets, dependency ordering and controls');

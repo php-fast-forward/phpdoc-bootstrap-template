@@ -40,6 +40,8 @@
             });
 
             document.getElementById('reset-panzoom').addEventListener('click', function () {
+                // zoomTo cancels pending smoothZoom animation in Panzoom 8.x.
+                instance.zoomTo(0, 0, 1);
                 instance.moveTo(0, 0);
                 instance.zoomAbs(0, 0, 1);
             });
