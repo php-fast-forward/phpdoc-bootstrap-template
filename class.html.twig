@@ -37,7 +37,7 @@
                 <section class="card border-0 shadow-sm">
                     <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
                         <i class="fas fa-sliders-h text-info"></i>
-                        <span class="fw-semibold">
+                        <span class="fw-semibold" id="properties">
                             Properties
                             {{ include('components/headerlink.html.twig', {'on': node, 'at': 'properties'}, with_context = false) }}
                         </span>
@@ -52,7 +52,7 @@
                 <section class="card border-0 shadow-sm">
                     <div class="card-header bg-body-tertiary border-0 d-flex align-items-center gap-2">
                         <i class="fas fa-code text-primary"></i>
-                        <span class="fw-semibold">
+                        <span class="fw-semibold" id="methods">
                             Methods
                             {{ include('components/headerlink.html.twig', {'on': node, 'at': 'methods'}, with_context = false) }}
                         </span>

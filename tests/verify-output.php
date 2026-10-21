@@ -127,6 +127,14 @@ function verify(string $output): void
             requireValid(isset($ids[$target['fragment']]), "Permalink target missing: {$href}");
         }
 
+        if (basename($source) === 'FastForward-Documentation-Example.html') {
+            foreach (['greet', 'farewell'] as $method) {
+                foreach (['tags', 'attributes'] as $section) {
+                    requireValid(isset($ids["method_{$method}-{$section}"]), "Member section missing: {$method} {$section}");
+                }
+            }
+        }
+
         $toggles = $xpath->query('//button[@data-reading-theme-toggle]');
         requireValid($toggles->length === 1, "Theme toggle missing: {$source}");
         $toggle = $toggles->item(0);
