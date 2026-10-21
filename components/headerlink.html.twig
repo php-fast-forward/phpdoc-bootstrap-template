@@ -1,5 +1,5 @@
 <a
-    href="{{ link(on) ~ (at ? ('#' ~ at)) }}"
+    href="{{ at ? (link(on)|split('#')|first ~ '#' ~ at) : link(on) }}"
     class="ms-2 text-decoration-none text-body-secondary"
     aria-label="Permalink"
     title="Permalink"

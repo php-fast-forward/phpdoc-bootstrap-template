@@ -28,6 +28,8 @@ jobs:
           tools: composer:v2
       - run: composer validate --strict
       - run: composer install --no-scripts --no-interaction --prefer-dist --no-progress
+      - name: Verify browser interaction contracts
+        run: node tests/interactions.test.cjs
       - name: Validate rendered checkout
         run: php tests/generate-fixture.php
       - name: Validate bundled consumer example
