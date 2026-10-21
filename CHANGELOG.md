@@ -5,6 +5,15 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2026-10-21
+
+### Fixed
+
+- Preserves shared graph-page assets and initializes zoom controls after loading their dependency. Cancels pending zoom animation before resetting the diagram. ([#14](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/14))
+- Remove tracked Finder metadata and ignore .DS_Store files throughout the repository. ([#10](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/10))
+- Scopes member tag and attribute IDs and replaces existing fragments in section permalinks. ([#14](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/14))
+- Restores search results and active state when reopening an unchanged query. ([#14](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/14))
+
 ## [2.2.0] - 2026-10-20
 
 ### Added
@@ -54,6 +63,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.2.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.0.0...v2.1.0
