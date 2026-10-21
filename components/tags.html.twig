@@ -1,12 +1,14 @@
+{% set node_link_parts = link(node)|split('#') %}
+{% set section_id = (node_link_parts|length > 1 ? node_link_parts|last ~ '-' : '') ~ 'tags' %}
 {% set tags = node.tags|filter((v, k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package', 'api', 'deprecated']) %}
 
 {% if tags|length > 0 and tags|first|length > 0 %}
     <section class="mt-4">
         <div class="d-flex align-items-center gap-2 mb-3">
             <i class="fas fa-tags text-info"></i>
-            <h5 class="h6 text-uppercase text-body-secondary fw-semibold mb-0" id="tags">
+            <h5 class="h6 text-uppercase text-body-secondary fw-semibold mb-0" id="{{ section_id }}">
                 Tags
-                {{ include('components/headerlink.html.twig', {'on': node, 'at': 'tags'}, with_context = false) }}
+                {{ include('components/headerlink.html.twig', {'on': node, 'at': section_id}, with_context = false) }}
             </h5>
         </div>
 

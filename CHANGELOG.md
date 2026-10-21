@@ -9,7 +9,10 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ### Fixed
 
+- Preserves shared graph-page assets and initializes zoom controls after loading their dependency. Cancels pending zoom animation before resetting the diagram. ([#14](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/14))
 - Remove tracked Finder metadata and ignore .DS_Store files throughout the repository. ([#10](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/10))
+- Scopes member tag and attribute IDs and replaces existing fragments in section permalinks. ([#14](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/14))
+- Restores search results and active state when reopening an unchanged query. ([#14](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/14))
 
 ## [2.2.0] - 2026-10-20
 
