@@ -90,7 +90,9 @@ function verify(string $output): void
         }
         $ids = [];
         foreach ($xpath->query('//*[@id]') as $element) {
-            $ids[$element->getAttribute('id')] = true;
+            $id = $element->getAttribute('id');
+            requireValid(!isset($ids[$id]), "Duplicate ID: {$id} in {$source}");
+            $ids[$id] = true;
         }
         requireValid($xpath->query('//input[@type="search" and @aria-label="Search documentation"]')->length > 0, "Search label missing: {$source}");
         requireValid(isset($ids['content']), "Reading target missing: {$source}");
@@ -115,6 +117,14 @@ function verify(string $output): void
             $target = localTarget($base['path'], $href);
             requireValid($target !== null && $target['path'] === $source, "Reading anchor leaves page: {$href} in {$source}");
             requireValid(isset($ids[$target['fragment']]), "Reading anchor is missing: {$href} in {$source}");
+        }
+
+        foreach ($xpath->query('//a[@aria-label="Permalink"]') as $anchor) {
+            $href = $anchor->getAttribute('href');
+            requireValid(substr_count($href, '#') === 1, "Invalid permalink fragment: {$href}");
+            $target = localTarget($base['path'], $href);
+            requireValid($target !== null && $target['path'] === $source, "Permalink leaves page: {$href}");
+            requireValid(isset($ids[$target['fragment']]), "Permalink target missing: {$href}");
         }
 
         $toggles = $xpath->query('//button[@data-reading-theme-toggle]');

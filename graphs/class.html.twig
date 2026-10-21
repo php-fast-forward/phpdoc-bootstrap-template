@@ -1,10 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    {{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script src="https://unpkg.com/panzoom@8.7.3/dist/panzoom.min.js"></script>
+    <script>
+        (function () {
+            var element = document.getElementById('scene');
+            var container = document.getElementById('graph-container');
+
+            var instance = panzoom(element, {
+                smoothScroll: false,
+                maxZoom: 5,
+                minZoom: 0.2,
+                bounds: false
+            });
+
+            container.addEventListener('mousedown', function () {
+                container.style.cursor = 'grabbing';
+            });
+
+            container.addEventListener('mouseup', function () {
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mouseleave', function () {
+                container.style.cursor = 'grab';
+            });
+
+            document.getElementById('zoom-in').addEventListener('click', function () {
+                instance.smoothZoom(0, 0, 1.2);
+            });
+
+            document.getElementById('zoom-out').addEventListener('click', function () {
+                instance.smoothZoom(0, 0, 0.8);
+            });
+
+            document.getElementById('reset-panzoom').addEventListener('click', function () {
+                instance.moveTo(0, 0);
+                instance.zoomAbs(0, 0, 1);
+            });
+        })();
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -49,42 +89,5 @@
         </div>
     </section>
 
-    <script>
-        (function () {
-            var element = document.getElementById('scene');
-            var container = document.getElementById('graph-container');
 
-            var instance = panzoom(element, {
-                smoothScroll: false,
-                maxZoom: 5,
-                minZoom: 0.2,
-                bounds: false
-            });
-
-            container.addEventListener('mousedown', function () {
-                container.style.cursor = 'grabbing';
-            });
-
-            container.addEventListener('mouseup', function () {
-                container.style.cursor = 'grab';
-            });
-
-            container.addEventListener('mouseleave', function () {
-                container.style.cursor = 'grab';
-            });
-
-            document.getElementById('zoom-in').addEventListener('click', function () {
-                instance.smoothZoom(0, 0, 1.2);
-            });
-
-            document.getElementById('zoom-out').addEventListener('click', function () {
-                instance.smoothZoom(0, 0, 0.8);
-            });
-
-            document.getElementById('reset-panzoom').addEventListener('click', function () {
-                instance.moveTo(0, 0);
-                instance.zoomAbs(0, 0, 1);
-            });
-        })();
-    </script>
 {% endblock %}
