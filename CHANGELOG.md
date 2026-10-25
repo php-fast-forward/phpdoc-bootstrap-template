@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.2] - 2026-10-25
+
+### Changed
+
+- Synchronize the bundled local skill automatically and trust Fast Forward Composer
+  skill donors through `fast-forward/*`.
+  Resolve Changelog contributor skills from stable `0.4.x` releases without a
+  redundant skill allowlist.
+
+  ([#16](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/16))
+
 ## [2.2.1] - 2026-10-21
 
 ### Fixed
@@ -63,6 +74,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.2.2]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.0...v2.1.1
