@@ -100,6 +100,27 @@ function verify(string $output): void
         $baseElement = $xpath->query('//base[@href]')->item(0);
         $base = localTarget($source, $baseElement?->getAttribute('href') ?? './');
         requireValid($base !== null, "External base URL: {$source}");
+
+        if (basename($source) === 'FastForward-Documentation-InterfaceExample.html') {
+            $interfaces = $xpath->query('//*[@id="toc-interfaces"]/ancestor::section[1]')->item(0);
+            requireValid($interfaces !== null, 'Implemented interfaces section missing');
+            requireValid(str_contains($interfaces->textContent, 'MissingContract'), 'Unresolved external interface name missing');
+            requireValid($xpath->query('.//abbr[@title="\\External\\Package\\MissingContract"]', $interfaces)->length === 1, 'Namespaced external interface title missing');
+            requireValid($xpath->query('.//a[contains(@href, "External-Package-MissingContract")]', $interfaces)->length === 0, 'Unresolved external interface must remain visible without a fabricated local link');
+            $internalLinks = 0;
+            foreach ($xpath->query('.//a[@href]', $interfaces) as $anchor) {
+                $target = localTarget($base['path'], $anchor->getAttribute('href'));
+                requireValid($target !== null && is_file($target['path']), 'Interface link has no generated target: ' . $anchor->getAttribute('href'));
+                requireValid(basename($target['path']) === 'FastForward-Documentation-LocalContract.html', 'Unexpected interface target');
+                requireValid(str_contains($anchor->textContent, 'LocalContract'), 'Local interface link text missing');
+                ++$internalLinks;
+            }
+            requireValid($internalLinks === 1, 'Documented interface must have exactly one native link');
+        }
+
+        if (basename($source) === 'FastForward-Documentation-NoInterfaceExample.html') {
+            requireValid($xpath->query('//*[@id="toc-interfaces"]')->length === 0, 'Empty implemented interfaces section rendered');
+        }
         foreach ($xpath->query('//img[@src] | //script[@src] | //link[@href]') as $element) {
             $href = $element->getAttribute($element->tagName === 'link' ? 'href' : 'src');
             $target = localTarget($base['path'], $href);
@@ -155,6 +176,9 @@ function verify(string $output): void
     requireValid(is_file($output . '/index.html'), 'Root guide not generated');
     requireValid(is_file($output . '/guides/installation.html'), 'Nested guide not generated');
     requireValid(is_file($output . '/classes/FastForward-Documentation-Example.html'), 'API not generated');
+    foreach (['LocalContract', 'InterfaceExample', 'NoInterfaceExample'] as $name) {
+        requireValid(is_file($output . '/classes/FastForward-Documentation-' . $name . '.html'), 'Interface regression fixture not generated: ' . $name);
+    }
     $source = $output . '/files/src/Example.php.txt';
     requireValid(is_file($source), 'Source View fixture not generated');
     requireValid(hash_file('sha256', $source) === hash_file('sha256', $template . '/tests/fixture/src/Example.php'), 'Source View bytes changed');
