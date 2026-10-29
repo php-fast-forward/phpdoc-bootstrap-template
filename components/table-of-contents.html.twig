@@ -55,9 +55,9 @@
                 <div class="list-group list-group-flush">
                     {% for interface in node.interfaces %}
                         <div class="list-group-item">
-                            <a href="{{ link(interface) }}" class="fw-semibold text-decoration-none">
+                            <span class="fw-semibold">
                                 {{ interface|route('class:short') }}
-                            </a>
+                            </span>
                             {% if interface.summary %}
                                 <p class="text-body-secondary mb-0 mt-1">{{ interface.summary }}</p>
                             {% endif %}
