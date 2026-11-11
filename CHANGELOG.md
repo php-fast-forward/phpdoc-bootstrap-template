@@ -5,6 +5,16 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.3] - 2026-10-29
+
+### Fixed
+
+- Resolve implemented interface links through phpDocumentor's native renderer so
+  external interfaces without generated API pages remain visible without broken
+  local links, and documented interfaces retain a single valid link.
+
+  ([#18](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/18))
+
 ## [2.2.2] - 2026-10-25
 
 ### Changed
@@ -74,6 +84,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.2.3]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.1.1...v2.2.0
