@@ -75,16 +75,16 @@
         },
         {
             "name": "llm/skills",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roxblnfk/skills.git",
-                "reference": "3ee0a545bf3ab77591fd9c35f0317191d78203c5"
+                "reference": "81ea574f9f16396309d3bef6002633dcced75f7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/roxblnfk/skills/zipball/3ee0a545bf3ab77591fd9c35f0317191d78203c5",
-                "reference": "3ee0a545bf3ab77591fd9c35f0317191d78203c5",
+                "url": "https://api.github.com/repos/roxblnfk/skills/zipball/81ea574f9f16396309d3bef6002633dcced75f7b",
+                "reference": "81ea574f9f16396309d3bef6002633dcced75f7b",
                 "shasum": ""
             },
             "require": {
@@ -101,6 +101,10 @@
                 "testo/bridge-infection": "0.1 - 1",
                 "testo/testo": "0.10 - 1",
                 "vimeo/psalm": "^7"
+            },
+            "suggest": {
+                "ext-intl": "Detects skill names that differ only in Unicode composition; without it or its Symfony polyfill non-ASCII skill names are skipped",
+                "ext-mbstring": "Detects skill names that differ only in non-ASCII letter case; without it non-ASCII skill names are skipped"
             },
             "type": "composer-plugin",
             "extra": {
@@ -143,7 +147,7 @@
                     "type": "boosty"
                 }
             ],
-            "time": "2026-10-15T12:10:05+00:00"
+            "time": "2026-11-07T23:42:03+00:00"
         },
         {
             "name": "phar-io/composer-distributor",
