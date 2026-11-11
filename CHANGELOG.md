@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.4] - 2026-11-11
+
+### Changed
+
+- Group Dependabot dependency updates by ecosystem and dependency type. ([#20](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/20))
+
 ## [2.2.3] - 2026-10-29
 
 ### Fixed
@@ -84,6 +90,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.2.4]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.3...v2.2.4
 [2.2.3]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.0...v2.2.1
