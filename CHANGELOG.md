@@ -9,6 +9,12 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ### Changed
 
+- chore(deps-dev): bump llm/skills from 1.15.0 to 1.16.0 in the composer-development group
+
+  Update dependencies: `llm/skills`.
+
+  ([#22](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/22), @dependabot[bot])
+
 - Group Dependabot dependency updates by ecosystem and dependency type. ([#20](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/20))
 
 ## [2.2.3] - 2026-10-29
