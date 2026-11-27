@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe1b3da1089559c1934ad34bdd396896",
+    "content-hash": "cbfd9b61d754be26b06430c2062d0d74",
     "packages": [],
     "packages-dev": [
         {
@@ -75,16 +75,16 @@
         },
         {
             "name": "llm/skills",
-            "version": "1.19.0",
+            "version": "1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roxblnfk/skills.git",
-                "reference": "ff1f3c124b8278bcceb5aee987b4cfab7f20c461"
+                "reference": "067431ca02dd6e5c1636025f11ca84a3d005235f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/roxblnfk/skills/zipball/ff1f3c124b8278bcceb5aee987b4cfab7f20c461",
-                "reference": "ff1f3c124b8278bcceb5aee987b4cfab7f20c461",
+                "url": "https://api.github.com/repos/roxblnfk/skills/zipball/067431ca02dd6e5c1636025f11ca84a3d005235f",
+                "reference": "067431ca02dd6e5c1636025f11ca84a3d005235f",
                 "shasum": ""
             },
             "require": {
@@ -107,6 +107,9 @@
             "type": "composer-plugin",
             "extra": {
                 "class": "LLM\\Skills\\Composer\\SkillsPlugin",
+                "skills": {
+                    "source": "resources/skills"
+                },
                 "bamarni-bin": {
                     "bin-links": true,
                     "forward-command": false,
@@ -150,7 +153,7 @@
                     "type": "boosty"
                 }
             ],
-            "time": "2026-11-15T14:10:03+00:00"
+            "time": "2026-11-23T11:47:24+00:00"
         },
         {
             "name": "phar-io/composer-distributor",

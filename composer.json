@@ -49,6 +49,6 @@
     },
     "require-dev": {
         "phpdocumentor/shim": "^3.9",
-        "llm/skills": "^1.15"
+        "llm/skills": "^1.22"
     }
 }
