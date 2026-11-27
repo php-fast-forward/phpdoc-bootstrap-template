@@ -5,6 +5,16 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.6] - 2026-11-27
+
+### Changed
+
+- chore(deps-dev): bump llm/skills from 1.19.0 to 1.22.0 in the composer-development group
+
+  Update dependencies: `llm/skills`.
+
+  ([#26](https://github.com/php-fast-forward/phpdoc-bootstrap-template/pull/26), @dependabot[bot])
+
 ## [2.2.5] - 2026-11-25
 
 ### Changed
@@ -108,6 +118,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 **Full Changelog**: https://github.com/php-fast-forward/phpdoc-bootstrap-template/commits/v1.0.0
 
+[2.2.6]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.5...v2.2.6
 [2.2.5]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.4...v2.2.5
 [2.2.4]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.3...v2.2.4
 [2.2.3]: https://github.com/php-fast-forward/phpdoc-bootstrap-template/compare/v2.2.2...v2.2.3
